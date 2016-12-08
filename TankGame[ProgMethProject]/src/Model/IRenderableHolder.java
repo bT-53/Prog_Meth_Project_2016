@@ -7,7 +7,7 @@ import java.util.List;
 
 public class IRenderableHolder {
 	
-	private static final IRenderableHolder instance = new IRenderableHolder();
+	public static final IRenderableHolder instance = new IRenderableHolder();
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
 	

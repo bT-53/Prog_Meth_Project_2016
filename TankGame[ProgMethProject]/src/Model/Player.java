@@ -1,5 +1,7 @@
 package Model;
 
+import Logic.GameManager;
+import Utility.GameUtility;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Player extends Entity implements Movable{
@@ -26,29 +28,40 @@ public class Player extends Entity implements Movable{
 	}
 	
 	@Override
-	public void hit() {
-		
-	}
-	
-	@Override
 	public void move() {
-		
+		x += GameUtility.DIR_X[direction] * speed;
+		y += GameUtility.DIR_Y[direction] * speed;
 	}
 	
 	@Override
 	public void rotate(int dir) {
-		
+		direction += dir;
+		if (direction >= 4) {
+			direction -= 4;
+		}
+		else if (direction < 0) {
+			direction += 4;
+		}
 	}
 	
 	public void attack() { // shoot the bullet
-		
+		if (bulletsLimit == 0) {
+			return;
+		}
+		bulletsLimit--;
+		Bullet bullet = new Bullet(this, x, y, direction);
+		IRenderableHolder.instance.addEntity(bullet);
+	}
+	
+	public void increaseBullets() {
+		bulletsLimit++;
 	}
 	
 	public int getHP() {
 		return hp;
 	}
 	
-	public void increaseHP(int incHP) {
-		hp += incHP;
+	public void increaseHP(int addHP) {
+		hp += addHP;
 	}
 }

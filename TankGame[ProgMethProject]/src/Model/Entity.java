@@ -25,5 +25,10 @@ public abstract class Entity implements IRenderable{
 	@Override
 	abstract public void draw(GraphicsContext gc);
 	
-	abstract public void hit();
+	public void hit(int dmg) {
+		hp -= dmg;
+		if (hp < 0) {
+			hp = 0;
+		}
+	}
 }

@@ -5,10 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Bullet extends Entity implements Movable{
 	
-	protected Player owner;
-	int damage;
-	int speed;
-	int direction;
+	private Player owner;
+	private int damage;
+	private int speed;
+	private int direction;
 	
 	public Bullet(Player player, int x, int y, int direction) {
 		super(1, x, y);
@@ -23,21 +23,19 @@ public class Bullet extends Entity implements Movable{
 	}
 	
 	@Override
-	public void hit() {
-		
+	public void hit(int dmg) {
+		hp = 0;
+		owner.increaseBullets();
 	}
 	
 	@Override
 	public void move() {
-		x += GameUtility.DIR_X[direction];
-		y += GameUtility.DIR_Y[direction];
+		x += GameUtility.DIR_X[direction] * speed;
+		y += GameUtility.DIR_Y[direction] * speed;
 	}
 	
 	@Override
 	public void rotate(int dir) {
-		direction += 2 * dir;
-		if (direction < 0) {
-			direction += 4;
-		}
+		// can't rotate
 	}
 }
