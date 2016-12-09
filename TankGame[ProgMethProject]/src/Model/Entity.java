@@ -13,11 +13,6 @@ public abstract class Entity implements IRenderable{
 	}
 	
 	@Override
-	public boolean isDestroyed() {
-		return hp <= 0;
-	}
-	
-	@Override
 	public int getZ() {
 		return 1; //except Pond has z = 0.
 	}
@@ -25,5 +20,15 @@ public abstract class Entity implements IRenderable{
 	@Override
 	abstract public void draw(GraphicsContext gc);
 	
-	abstract public void hit();
+	@Override
+	public boolean isDestroyed() {
+		return hp <= 0;
+	}
+	
+	public void hit(int dmg) {
+		hp -= dmg;
+		if (hp < 0) {
+			hp = 0;
+		}
+	}
 }

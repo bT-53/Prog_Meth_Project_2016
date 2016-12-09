@@ -23,21 +23,18 @@ public class Bullet extends Entity implements Movable{
 	}
 	
 	@Override
-	public void hit() {
-		
+	public void hit(int dmg) {
+		hp = 0;
 	}
 	
 	@Override
 	public void move() {
-		x += GameUtility.DIR_X[direction];
-		y += GameUtility.DIR_Y[direction];
+		x += GameUtility.DIR_X[direction] * speed;
+		y += GameUtility.DIR_Y[direction] * speed;
 	}
 	
 	@Override
 	public void rotate(int dir) {
-		direction += 2 * dir;
-		if (direction < 0) {
-			direction += 4;
-		}
+		//can't roate
 	}
 }
