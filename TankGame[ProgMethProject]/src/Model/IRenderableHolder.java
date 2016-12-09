@@ -5,11 +5,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.sun.media.jfxmedia.AudioClip;
+
+import javafx.scene.image.Image;
+
 public class IRenderableHolder {
 	
 	private static final IRenderableHolder instance = new IRenderableHolder();
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
+	public static Image bg;
+	public static AudioClip shootingSound;
+	public static AudioClip deathSound;
+	private static String shoot = "shootingSound.wav";
+	private static String death = "shootingSound.wav" ;
 	
 	public IRenderableHolder() {
 		entities = new ArrayList<>();
@@ -19,13 +28,25 @@ public class IRenderableHolder {
 			return -1;
 		};
 	}
+	static{
+		loadResource();
+	}
 	
 	public void addEntity(IRenderable e) {
 		entities.add(e);
 		Collections.sort(entities, comparator);
 	}
 	
+	private static void loadResource() {
+		// TODO Auto-generated method stub
+		bg = new Image(ClassLoader.getSystemResource("bg.png").toString());
+		}
+
 	public List<IRenderable> getEntities() {
 		return entities;
+	}
+	
+	public static IRenderableHolder getInstance(){
+		return instance;
 	}
 }
