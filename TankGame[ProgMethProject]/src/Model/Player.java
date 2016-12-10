@@ -81,4 +81,8 @@ public class Player extends Entity implements Movable{
 	public void increaseSpeed(int addSpeed) {
 		speed += addSpeed;
 	}
+	
+	public int getDirection() {
+		return direction;
+	}
 }
