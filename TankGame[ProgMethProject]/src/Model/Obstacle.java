@@ -2,10 +2,10 @@ package Model;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class StrongObstacle extends Entity {
+public class Obstacle extends Entity {
 	
-	public StrongObstacle(int x, int y) {
-		super(100, x, y);
+	public Obstacle(int x, int y) {
+		super(1, x, y);
 	}
 	
 	@Override

@@ -1,6 +1,6 @@
 package Model;
 
-public class Pond extends StrongObstacle implements BulletPassable {
+public class Pond extends Obstacle implements BulletPassable {
 	
 	public Pond(int x, int y) {
 		super(x, y);
