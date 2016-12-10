@@ -5,8 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Bullet extends Entity implements Movable{
-	public final static int WIDTH = 12;
-	public final static int HEIGHT = 12;
+	public final static int WIDTH = 10;
+	public final static int HEIGHT = 10;
 	protected Player owner;
 	int damage;
 	int speed;
@@ -28,6 +28,11 @@ public class Bullet extends Entity implements Movable{
 	@Override
 	public void hit(int dmg) {
 		hp = 0;
+	}
+	
+	@Override
+	public int getZ() {
+		return 1; //except Pond has z = 0.
 	}
 	
 	@Override

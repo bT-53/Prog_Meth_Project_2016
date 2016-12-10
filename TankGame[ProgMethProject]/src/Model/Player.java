@@ -32,6 +32,19 @@ public class Player extends Entity implements Movable{
 	}
 	
 	@Override
+	public int getZ() {
+		return 1; //except Pond has z = 0.
+	}
+	
+	@Override
+	public void hit(int dmg) {
+		hp -= dmg;
+		if (hp < 0) {
+			hp = 0;
+		}
+	}
+	
+	@Override
 	public void move() {
 		x += GameUtility.DIR_X[direction] * speed;
 		y += GameUtility.DIR_Y[direction] * speed;
