@@ -5,6 +5,7 @@ import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
 import Model.SpeedItem;
+import Model.StrongObstacle;
 import Utility.GameUtility;
 import Utility.InputUtility;
 import javafx.scene.canvas.Canvas;
@@ -52,7 +53,7 @@ public class GameScreen extends StackPane{
 		IRenderableHolder.getInstance().addEntity(player2);
 		player1 = new Player("Natty", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
-		IRenderableHolder.getInstance().addEntity(new SpeedItem(100,100));
+		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,100));
 		findPlayer();
 		
 		System.out.println(player1.getName()+player2.getName());
