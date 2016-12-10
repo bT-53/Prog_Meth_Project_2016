@@ -58,7 +58,7 @@ public class InputUtility {
 		return holdKeyLeft1;
 	}
 	
-	public static boolean getKeyUP2(){
+	public static boolean getKeyUp2(){
 		return holdKeyUp2;
 	}
 	

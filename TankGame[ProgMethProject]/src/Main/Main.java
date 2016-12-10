@@ -66,12 +66,7 @@ public class Main extends Application{
 		};
 		animation.start();
 		
-		
-		
-		
-		
-		
-		
+
 		primaryStage.setScene(gameScene);
 		primaryStage.sizeToScene();
 		primaryStage.show();

@@ -26,13 +26,12 @@ public class GameScreen extends StackPane{
 	private static int maxWidth = 1920 ; 
 	private static int maxHeight = 1160;
 //	private int currentX2, currentY2,speed2,directionX2, directionY2;
-	private int[] currentX, currentY , direction , speed;
+	private int[] currentX, currentY , speed;
 	
 	public GameScreen(){
 		super();
 		currentX = new int[2];
 		currentY = new int[2];
-		direction= new int[2];
 
 		speed = new int[2];
 		this.setPrefSize(1150, 600);
@@ -49,7 +48,7 @@ public class GameScreen extends StackPane{
 //		this.directionX[1] = 0;
 //		this.directionY[1] = 0;
 		
-		player2 = new Player("SA",250,300,GameUtility.UP); 
+		player2 = new Player("SA",400,300,GameUtility.UP); 
 		IRenderableHolder.getInstance().addEntity(player2);
 		player1 = new Player("Natty", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
@@ -57,6 +56,7 @@ public class GameScreen extends StackPane{
 		findPlayer();
 		
 		System.out.println(player1.getName()+player2.getName());
+		System.out.println(currentX[0] + " "+ currentX[1]);
 
 		
 		this.bg = IRenderableHolder.bg;
@@ -71,16 +71,8 @@ public class GameScreen extends StackPane{
 	}
 	
 	public void update(){
-		int newX = currentX[0];
-		int newY = currentY[0];
-		newX = player1.getX() - 250;
-		newY = player1.getY() - 250;
-		if(newX >= 0 && newX + frameWidth <= maxWidth){
-			currentX[0] = newX;
-		}
-		if(newY >= 0 && newY + frameHeight <= maxHeight){
-			currentY[0] = newY;
-		}
+		frameUpdate(player1,0);
+		frameUpdate(player2,1);
 		
 		if(InputUtility.getKeyDown1()){
 			player1.setDirection(GameUtility.DOWN);
@@ -98,6 +90,22 @@ public class GameScreen extends StackPane{
 			player1.setDirection(GameUtility.UP);
 			player1.move();
 		}
+		if(InputUtility.getKeyDown2()){
+			player2.setDirection(GameUtility.DOWN);
+			player2.move();
+		}
+		else if(InputUtility.getKeyLeft2()){
+			player2.setDirection(GameUtility.LEFT);
+			player2.move();
+		}
+		else if(InputUtility.getKeyRight2()){
+			player2.setDirection(GameUtility.RIGHT);
+			player2.move();
+		}
+		else if(InputUtility.getKeyUp2()){
+			player2.setDirection(GameUtility.UP);
+			player2.move();
+		}
 		
 	}
 	
@@ -112,6 +120,15 @@ public class GameScreen extends StackPane{
 		}else if(code.toString().equals("LEFT")){
 			InputUtility.setKeyLeft1(true);
 		}
+		if(code.toString().equals("W")){
+			InputUtility.setKeyUp2(true);
+		}else if(code.toString().equals("S")){
+			InputUtility.setKeyDown2(true);
+		}else if(code.toString().equals("D")){
+			InputUtility.setKeyRight2(true);
+		}else if(code.toString().equals("A")){
+			InputUtility.setKeyLeft2(true);
+		}
 	}
 	
 	public void keyReleased(KeyCode code){
@@ -124,7 +141,28 @@ public class GameScreen extends StackPane{
 		}else if(code.toString().equals("LEFT")){
 			InputUtility.setKeyLeft1(false);
 		}
-
+		if(code.toString().equals("W")){
+			InputUtility.setKeyUp2(false);
+		}else if(code.toString().equals("S")){
+			InputUtility.setKeyDown2(false);
+		}else if(code.toString().equals("D")){
+			InputUtility.setKeyRight2(false);
+		}else if(code.toString().equals("A")){
+			InputUtility.setKeyLeft2(false);
+		}
+	}
+	
+	public void frameUpdate(Player player,int frameNuber){
+		int newX = currentX[frameNuber];
+		int newY = currentY[frameNuber];
+		newX = player.getX() - 250;
+		newY = player.getY() - 250;
+		if(newX >= 0 && newX + frameWidth <= maxWidth){
+			currentX[frameNuber] = newX;
+		}
+		if(newY >= 0 && newY + frameHeight <= maxHeight){
+			currentY[frameNuber] = newY;
+		}
 	}
 	
 	public void paintComponenet(){
@@ -144,12 +182,12 @@ public class GameScreen extends StackPane{
 	
 	public void paintFrame1(GraphicsContext gc){ //draw frame1
 		WritableImage shownFrame1 = new WritableImage(bg.getPixelReader(), currentX[0], currentY[0],frameWidth , frameHeight);
-		gc.drawImage(shownFrame1, 50, 50);
+		gc.drawImage(shownFrame1, 600, 50);
 		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
 			Entity p = (Entity)r;
 			
 			if(isInFrame(p.getX(), p.getY(), currentX[0], currentY[0])){
-				int x = 50 + p.getX() - currentX[0];
+				int x = 600 + p.getX() - currentX[0];
 				int y = 50 +  p.getY() - currentY[0];
 				p.draw(gc, x, y);
 			}
@@ -158,12 +196,12 @@ public class GameScreen extends StackPane{
 	
 	public void paintFrame2(GraphicsContext gc){//draw frame2
 		WritableImage shownFrame2 = new WritableImage(bg.getPixelReader(), currentX[1], currentY[1],frameWidth , frameHeight);
-		gc.drawImage(shownFrame2, 600, 50);
+		gc.drawImage(shownFrame2, 50, 50);
 		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
 			Entity p = (Entity)r;
 			
 			if(isInFrame(p.getX(), p.getY(), currentX[1], currentY[1])){
-				int x = 600 + p.getX() - currentX[1];
+				int x = 50 + p.getX() - currentX[1];
 				int y = 50 +  p.getY() - currentY[1];
 				p.draw(gc, x, y);
 			}
