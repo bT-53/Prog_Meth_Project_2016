@@ -1,6 +1,7 @@
 package Model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class WeakObstacle extends Obstacle{
 	
@@ -9,8 +10,9 @@ public class WeakObstacle extends Obstacle{
 	}
 	
 	@Override
-	public void draw(GraphicsContext gc) {
-		
+	public void draw(GraphicsContext gc, int x, int y) {
+		gc.setFill(Color.BROWN);
+		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	
 	@Override

@@ -2,9 +2,11 @@ package Model;
 
 import Utility.GameUtility;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Bullet extends Entity implements Movable{
-	
+	public final static int WIDTH = 12;
+	public final static int HEIGHT = 12;
 	protected Player owner;
 	int damage;
 	int speed;
@@ -18,8 +20,9 @@ public class Bullet extends Entity implements Movable{
 	}
 	
 	@Override
-	public void draw(GraphicsContext gc) {
-		
+	public void draw(GraphicsContext gc, int x, int y ) {
+		gc.setFill(Color.BLUE);
+		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	
 	@Override

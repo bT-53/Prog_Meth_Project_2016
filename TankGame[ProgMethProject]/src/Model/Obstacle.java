@@ -1,9 +1,11 @@
 package Model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Obstacle extends Entity {
-	
+	public final static int WIDTH = 40;
+	public final static int HEIGHT = 40;
 	public Obstacle(int x, int y) {
 		super(1, x, y);
 	}
@@ -14,8 +16,9 @@ public class Obstacle extends Entity {
 	}
 	
 	@Override
-	public void draw(GraphicsContext gc) {
-		
+	public void draw(GraphicsContext gc, int x, int y ) {
+		gc.setFill(Color.GRAY);
+		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	
 	@Override

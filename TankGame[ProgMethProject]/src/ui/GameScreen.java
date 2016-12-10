@@ -4,7 +4,9 @@ import Model.Entity;
 import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
+import Model.SpeedItem;
 import Utility.GameUtility;
+import Utility.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -18,44 +20,49 @@ public class GameScreen extends StackPane{
 	
 	private Canvas canvas;
 	private Image bg;
+	private Player player1, player2;
 //	private int currentX, currentY,speed,directionX, directionY;
 	private static int frameWidth, frameHeight;
 	private static int maxWidth = 1920 ; 
-	private static int maxHeight = 1138;
+	private static int maxHeight = 1160;
 //	private int currentX2, currentY2,speed2,directionX2, directionY2;
-	private int[] currentX, currentY , directionX , directionY, speed;
+	private int[] currentX, currentY , direction , speed;
 	
 	public GameScreen(){
 		super();
 		currentX = new int[2];
 		currentY = new int[2];
-		directionX = new int[2];
-		directionY = new int[2];
+		direction= new int[2];
+
 		speed = new int[2];
-		this.setPrefSize(1010, 500);
-		this.currentX[0] = 100;
-		this.currentY[0] = 100;
-		this.speed[0] = 5;
-		this.directionX[0] = 0;
-		this.directionY[0] = 0;
+		this.setPrefSize(1150, 600);
+//		this.currentX[0] = 100;
+//		this.currentY[0] = 100;
+//		this.speed[0] = 5;
+//		this.directionX[0] = 0;
+//		this.directionY[0] = 0;
 		frameHeight = 500;
 		frameWidth = 500;
-		this.currentX[1] = 500;
-		this.currentY[1] = 500;
-		this.speed[1] = 5;
-		this.directionX[1] = 0;
-		this.directionY[1] = 0;
-		Player player1 = new Player("Natty", 250, 250,GameUtility.UP);
-		IRenderableHolder.getInstance().addEntity(player1);
-		Player player2 = new Player("SA",900,900,GameUtility.UP); 
-		IRenderableHolder.getInstance().addEntity(player2);
+//		this.currentX[1] = 500;
+//		this.currentY[1] = 500;
+//		this.speed[1] = 5;
+//		this.directionX[1] = 0;
+//		this.directionY[1] = 0;
 		
+		player2 = new Player("SA",250,300,GameUtility.UP); 
+		IRenderableHolder.getInstance().addEntity(player2);
+		player1 = new Player("Natty", 250, 250,GameUtility.UP);
+		IRenderableHolder.getInstance().addEntity(player1);
+		IRenderableHolder.getInstance().addEntity(new SpeedItem(100,100));
+		findPlayer();
+		
+		System.out.println(player1.getName()+player2.getName());
 
 		
 		this.bg = IRenderableHolder.bg;
 		
 		System.out.println(bg.getHeight()+" "+bg.getWidth());
-		this.canvas = new Canvas(1010,500);
+		this.canvas = new Canvas(1150,600);
 		canvas.setVisible(true);			
 		
 		
@@ -65,71 +72,141 @@ public class GameScreen extends StackPane{
 	
 	public void update(){
 		int newX = currentX[0];
-		int	newY = currentY[0];
-		if(directionX[0] == 0 && directionY[0] == 0)return;
-		else if(directionX[0] == 1)newX += speed[0];
-		else if(directionX[0] == -1)newX -= speed[0];
-		else if(directionY[0] == 1)newY += speed[0];
-		else if(directionY[0] == -1)newY -= speed[0];
-		
-		
-		if(newX + frameWidth <= maxWidth && newX >= 0){
+		int newY = currentY[0];
+		newX = player1.getX() - 250;
+		newY = player1.getY() - 250;
+		if(newX >= 0 && newX + frameWidth <= maxWidth){
 			currentX[0] = newX;
-			System.out.println(currentX);
 		}
-		if(newY + frameHeight <= maxHeight && newY >= 0){
+		if(newY >= 0 && newY + frameHeight <= maxHeight){
 			currentY[0] = newY;
-			System.out.println(currentY);
+		}
+		
+		if(InputUtility.getKeyDown1()){
+			player1.setDirection(GameUtility.DOWN);
+			player1.move();
+		}
+		else if(InputUtility.getKeyLeft1()){
+			player1.setDirection(GameUtility.LEFT);
+			player1.move();
+		}
+		else if(InputUtility.getKeyRight1()){
+			player1.setDirection(GameUtility.RIGHT);
+			player1.move();
+		}
+		else if(InputUtility.getKeyUp1()){
+			player1.setDirection(GameUtility.UP);
+			player1.move();
+		}
+		
+	}
+	
+	public void keyPressed(KeyCode code) {
+		// TODO Auto-generated method stub
+		if(code.toString().equals("UP")){
+			InputUtility.setKeyUp1(true);
+		}else if(code.toString().equals("DOWN")){
+			InputUtility.setKeyDown1(true);
+		}else if(code.toString().equals("RIGHT")){
+			InputUtility.setKeyRight1(true);
+		}else if(code.toString().equals("LEFT")){
+			InputUtility.setKeyLeft1(true);
 		}
 	}
 	
-	public void keyPressed(KeyCode k, boolean pressed){
-		String keycode = k.toString();
-		if(keycode.equals("UP")){
-			this.directionX[0] = 0;
-			this.directionY[0] = -1;
-		}else if(keycode.equals("DOWN")){
-			this.directionX[0] = 0;
-			this.directionY[0] = 1;
-		}else if(keycode.equals("RIGHT")){
-			this.directionX[0] = 1;
-			this.directionY[0] = 0;
-		}else if(keycode.equals("LEFT")){
-			this.directionX[0] = -1;
-			this.directionY[0] = 0;
+	public void keyReleased(KeyCode code){
+		if(code.toString().equals("UP")){
+			InputUtility.setKeyUp1(false);
+		}else if(code.toString().equals("DOWN")){
+			InputUtility.setKeyDown1(false);
+		}else if(code.toString().equals("RIGHT")){
+			InputUtility.setKeyRight1(false);
+		}else if(code.toString().equals("LEFT")){
+			InputUtility.setKeyLeft1(false);
 		}
-	}
-	
-	public void keyReleased(KeyCode k, boolean released){
-		this.directionX[0] = 0;
-		this.directionY[0] = 0;
+
 	}
 	
 	public void paintComponenet(){
 		GraphicsContext gc = this.canvas.getGraphicsContext2D();
-		gc.clearRect(0, 0, 1010, 500);
-		WritableImage shownFrame1 = new WritableImage(bg.getPixelReader(), currentX[0], currentY[0],frameWidth , frameHeight);
-		WritableImage shownFrame2 = new WritableImage(bg.getPixelReader(), currentX[1], currentY[1],frameWidth , frameHeight);
-		gc.drawImage(shownFrame1, 0,0);
-		gc.drawImage(shownFrame2, 510, 0);
-		gc.setFill(Color.BEIGE);
-		gc.fillRect(500, 0, 10, 500);
-		gc.fillRect(235, 235, 30, 30);
+		gc.clearRect(0, 0, 1150, 600);
+		paintFrame1(gc);
+		paintFrame2(gc);
+		paintUI(gc);
+//		System.out.println(""+currentX[1]+" "+currentX[0]);
+//		gc.setFill(Color.BEIGE);
+//		gc.fillRect(500, 0, 10, 500);
+//		gc.fillRect(235, 235, 30, 30);
+//		gc.fillOval(270, 270, 12, 12);
 		
 		
 	}
 	
-//	public void findPlayer(){ //use to find player and capture in the frame
-//		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
-//			int i = 0;
-//			if(r instanceof Player){
-//				Player p = (Player) r;
-//				currentX[i] = p.getX()-250;
-//				currentY[i] = p.getY()-250;
-//				speed[i] = p.getSpeed();
-//				i++;
-//			}
-//		}
-//	}
+	public void paintFrame1(GraphicsContext gc){ //draw frame1
+		WritableImage shownFrame1 = new WritableImage(bg.getPixelReader(), currentX[0], currentY[0],frameWidth , frameHeight);
+		gc.drawImage(shownFrame1, 50, 50);
+		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
+			Entity p = (Entity)r;
+			
+			if(isInFrame(p.getX(), p.getY(), currentX[0], currentY[0])){
+				int x = 50 + p.getX() - currentX[0];
+				int y = 50 +  p.getY() - currentY[0];
+				p.draw(gc, x, y);
+			}
+		}
+	}
+	
+	public void paintFrame2(GraphicsContext gc){//draw frame2
+		WritableImage shownFrame2 = new WritableImage(bg.getPixelReader(), currentX[1], currentY[1],frameWidth , frameHeight);
+		gc.drawImage(shownFrame2, 600, 50);
+		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
+			Entity p = (Entity)r;
+			
+			if(isInFrame(p.getX(), p.getY(), currentX[1], currentY[1])){
+				int x = 600 + p.getX() - currentX[1];
+				int y = 50 +  p.getY() - currentY[1];
+				p.draw(gc, x, y);
+			}
+		}
+	}
+	
+	public void paintUI(GraphicsContext gc){
+		gc.setFill(Color.BLUE);
+		gc.fillRect(0, 0, 1150, 50);
+	}
+	
+	public void findPlayer(){ //use to find player and capture in the frame
+		int i = 0;
+		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
+			
+			if(r instanceof Player){
+				Player p = (Player) r;
+				currentX[i] = p.getX()-250;
+				currentY[i] = p.getY()-250;
+				speed[i] = p.getSpeed();
+				
+				if(currentX[i] < 0) currentX[i] = 0;
+				else if(currentX[i] + 500 > 1920) currentX[i] = 1920 - 500;
+				if(currentY[i] < 0) currentY[i] = 0;
+				else if(currentY[i] + 500 > 1138 ) currentY[i] = 1138 - 500;
+				
+				if(i == 0){
+					player1 = p;
+				}else if(i == 1){
+					player2 = p;
+				}
+				i++;
+			}
+		}
+	}
+	
+	public boolean isInFrame(int x, int y, int currentX, int currentY){
+		if(x - currentX + 20 < 0 || x - currentX - 20 > 500) return false;
+		else if(y - currentY +20 < 0 || y - currentY -20 > 500) return false;
+		return true;
+	}
+
+	
+	
 	
 }

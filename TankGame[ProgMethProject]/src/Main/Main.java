@@ -37,11 +37,13 @@ public class Main extends Application{
 
 		gameScene.setOnKeyPressed((KeyEvent e) ->{
 			System.out.println(e.getCode().toString());
-			gameScreen.keyPressed(e.getCode(),true);
+			gameScreen.keyPressed(e.getCode());
 		});
 		
+		
 		gameScene.setOnKeyReleased((KeyEvent e) ->{
-			gameScreen.keyReleased(e.getCode(), true);
+			System.out.println("           "+e.getCode().toString());
+			gameScreen.keyReleased(e.getCode());
 		});
 		
 		AnimationTimer animation = new AnimationTimer() {

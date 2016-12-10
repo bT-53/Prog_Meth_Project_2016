@@ -2,9 +2,11 @@ package Model;
 
 import Utility.GameUtility;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Player extends Entity implements Movable{
-	
+	public final static int WIDTH = 30;
+	public final static int HEIGHT = 30;
 	private String name;
 	private int atk, atkspeed;
 	private int bulletsLimit;
@@ -18,12 +20,15 @@ public class Player extends Entity implements Movable{
 		atk = 1;
 		atkspeed = 2;
 		bulletsLimit = 1;
-		speed = 1;
+		speed = 5;
 	}
 	
 	@Override
-	public void draw(GraphicsContext gc) {
-		
+	public void draw(GraphicsContext gc, int x, int y) {
+		gc.setFill(Color.BLUE);
+		gc.fillRect(x - WIDTH/2 , y - HEIGHT/2, 30, 30);
+		gc.setFill(Color.RED);
+		gc.fillOval(x - 7.5, y - 7.5, 16, 16);
 	}
 	
 	@Override
@@ -58,7 +63,7 @@ public class Player extends Entity implements Movable{
 		atk += addATK;
 	}
 	
-	public int getBUllets() {
+	public int getBullets() {
 		return bulletsLimit;
 	}
 	
@@ -80,5 +85,17 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseSpeed(int addSpeed) {
 		speed += addSpeed;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public void setDirection(int direction){
+		this.direction = direction;
+	}
+	
+	public int getDirection(){
+		return direction;
 	}
 }
