@@ -12,13 +12,12 @@ public class SpeedItem extends Item{
 	@Override
 	public void draw(GraphicsContext gc,int x,int y) {
 		gc.setFill(Color.YELLOW);
-		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
+		gc.fillRoundRect(x-WIDTH/2, y-HEIGHT/2, WIDTH, HEIGHT, 10, 10);
 	}
 	
 	@Override
 	public void collect(Player player) {
 		player.increaseSpeed(1);
 		hp = 0;
-		System.out.println("Collect");
 	}
 }

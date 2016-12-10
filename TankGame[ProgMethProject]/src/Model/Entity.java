@@ -3,6 +3,7 @@ package Model;
 import javafx.scene.canvas.GraphicsContext;
 
 public abstract class Entity implements IRenderable{
+	
 	protected int hp;
 	protected int x, y;
 	
@@ -13,24 +14,17 @@ public abstract class Entity implements IRenderable{
 	}
 	
 	@Override
-	public int getZ() {
-		return 1; //except Pond has z = 0.
-	}
+	public abstract int getZ();
 	
 	@Override
-	abstract public void draw(GraphicsContext gc, int x, int y);
+	public abstract void draw(GraphicsContext gc, int x, int y);
 	
 	@Override
 	public boolean isDestroyed() {
 		return hp <= 0;
 	}
 	
-	public void hit(int dmg) {
-		hp -= dmg;
-		if (hp < 0) {
-			hp = 0;
-		}
-	}
+	public abstract void hit(int dmg);
 	
 	public int getX(){
 		return x;

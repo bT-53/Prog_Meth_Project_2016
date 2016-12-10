@@ -55,10 +55,20 @@ public class GameManager {
 	}
 	
 	private static void collide(Entity e1, Entity e2) {
+		System.out.println("Collide");
 		if (e1 instanceof Bullet) {
+			System.out.println("Bullet1");
 			if (e2 instanceof BulletPassable) {
 				// nothing happen
 				return;
+			}
+			else if (e2 instanceof Player) {
+				if (((Bullet) e1).getOwner().equals(e2)) {
+					return;
+				}
+				int dmg = ((Bullet)e1).getDamage();
+				e1.hit(dmg);
+				e2.hit(dmg);
 			}
 			else {
 				int dmg = ((Bullet)e1).getDamage();
@@ -67,9 +77,19 @@ public class GameManager {
 			}
 		}
 		else if (e2 instanceof Bullet) {
+			System.out.println("Bullet2");
 			if (e1 instanceof BulletPassable) {
 				// nothing happen
 				return;
+			}
+			else if (e1 instanceof Player) {
+				if (((Bullet) e2).getOwner().equals(e1)) {
+					System.out.println("WTF");
+					return;
+				}
+				int dmg = ((Bullet)e2).getDamage();
+				e1.hit(dmg);
+				e2.hit(dmg);
 			}
 			else {
 				int dmg = ((Bullet)e2).getDamage();
@@ -80,6 +100,9 @@ public class GameManager {
 		else if (e1 instanceof Player) {
 			if (e2 instanceof Item) {
 				((Item) e2).collect((Player)e1);
+			}
+			else if (e2 instanceof Player) {
+				return;
 			}
 			else if (e2 instanceof Entity) {
 				//TODO: wait for width and size of each entity
@@ -104,6 +127,9 @@ public class GameManager {
 		else if (e2 instanceof Player) {
 			if (e1 instanceof Item) {
 				((Item) e1).collect((Player)e2);
+			}
+			else if (e1 instanceof Player) {
+				return;
 			}
 			else if (e1 instanceof Entity) {
 				//TODO: wait for width and size of each entity

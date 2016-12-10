@@ -7,32 +7,35 @@ import javafx.scene.paint.Color;
 public class Bullet extends Entity implements Movable{
 	public final static int WIDTH = 10;
 	public final static int HEIGHT = 10;
-	protected Player owner;
-	int damage;
-	int speed;
-	int direction;
+	private Player owner;
+	private int damage;
+	private int speed;
+	private int direction;
 	
-	public Bullet(Player player, int x, int y, int direction) {
+	public Bullet(Player player, int x, int y) {
 		super(1, x, y);
 		this.owner = player;
-		damage = 1;
-		this.direction = direction;
+		damage = player.getATK();
+		direction = player.getDirection();
+		speed = player.getATKSpeed();
 	}
 	
 	@Override
 	public void draw(GraphicsContext gc, int x, int y ) {
-		gc.setFill(Color.BLUE);
+		gc.setFill(Color.YELLOW);
 		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	
 	@Override
 	public void hit(int dmg) {
+		System.out.println("Hit");
 		hp = 0;
+		owner.increaseBullets();
 	}
 	
 	@Override
 	public int getZ() {
-		return 1; //except Pond has z = 0.
+		return 2;
 	}
 	
 	@Override
@@ -52,5 +55,9 @@ public class Bullet extends Entity implements Movable{
 	
 	public int getSpeed() {
 		return speed;
+	}
+	
+	public Player getOwner() {
+		return owner;
 	}
 }

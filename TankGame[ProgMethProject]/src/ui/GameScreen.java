@@ -1,11 +1,17 @@
 package ui;
 
+import java.util.List;
+
+import Logic.GameManager;
+import Model.Bullet;
 import Model.Entity;
 import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
+import Model.Pond;
 import Model.SpeedItem;
 import Model.StrongObstacle;
+import Model.WeakObstacle;
 import Utility.GameUtility;
 import Utility.InputUtility;
 import javafx.scene.canvas.Canvas;
@@ -22,11 +28,9 @@ public class GameScreen extends StackPane{
 	private Canvas canvas;
 	private Image bg;
 	private Player player1, player2;
-//	private int currentX, currentY,speed,directionX, directionY;
 	private static int frameWidth, frameHeight;
 	private static int maxWidth = 1920 ; 
 	private static int maxHeight = 1160;
-//	private int currentX2, currentY2,speed2,directionX2, directionY2;
 	private int[] currentX, currentY , speed;
 	
 	public GameScreen(){
@@ -36,24 +40,16 @@ public class GameScreen extends StackPane{
 
 		speed = new int[2];
 		this.setPrefSize(1150, 600);
-//		this.currentX[0] = 100;
-//		this.currentY[0] = 100;
-//		this.speed[0] = 5;
-//		this.directionX[0] = 0;
-//		this.directionY[0] = 0;
 		frameHeight = 500;
 		frameWidth = 500;
-//		this.currentX[1] = 500;
-//		this.currentY[1] = 500;
-//		this.speed[1] = 5;
-//		this.directionX[1] = 0;
-//		this.directionY[1] = 0;
 		
 		player2 = new Player("SA",400,300,GameUtility.UP); 
 		IRenderableHolder.getInstance().addEntity(player2);
 		player1 = new Player("Natty", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
-		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,100));
+		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
+		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
+		IRenderableHolder.getInstance().addEntity(new Bullet(player1,300,300));
 		findPlayer();
 		
 		System.out.println(player1.getName()+player2.getName());
@@ -107,7 +103,24 @@ public class GameScreen extends StackPane{
 			player2.setDirection(GameUtility.UP);
 			player2.move();
 		}
-		
+		if(InputUtility.getKeyShoot1()){
+			player1.attack();	
+		}
+		if(InputUtility.getKeyShoot2()){
+			player2.attack();
+		}
+		List<IRenderable> entities = IRenderableHolder.getInstance().getEntities();
+		for (int i = entities.size()-1; i>=0; i--) {
+			if (entities.get(i) instanceof Bullet) {
+				((Bullet) entities.get(i)).move();
+			}
+		}
+		GameManager.checkCollision();
+		for (int i = entities.size()-1; i>=0; i--) {
+			if (entities.get(i).isDestroyed()) {
+				entities.remove(i);
+			}
+		}
 	}
 	
 	public void keyPressed(KeyCode code) {
@@ -130,6 +143,12 @@ public class GameScreen extends StackPane{
 		}else if(code.toString().equals("A")){
 			InputUtility.setKeyLeft2(true);
 		}
+		if(code.toString().equals("ENTER")){
+			InputUtility.setKeyShoot1(true);
+		}
+		if(code.toString().equals("SPACE")){
+			InputUtility.setKeyShoot2(true);
+		}
 	}
 	
 	public void keyReleased(KeyCode code){
@@ -150,6 +169,12 @@ public class GameScreen extends StackPane{
 			InputUtility.setKeyRight2(false);
 		}else if(code.toString().equals("A")){
 			InputUtility.setKeyLeft2(false);
+		}
+		if(code.toString().equals("ENTER")){
+			InputUtility.setKeyShoot1(false);
+		}
+		if(code.toString().equals("SPACE")){
+			InputUtility.setKeyShoot2(false);
 		}
 	}
 	
@@ -212,6 +237,14 @@ public class GameScreen extends StackPane{
 	public void paintUI(GraphicsContext gc){
 		gc.setFill(Color.BLUE);
 		gc.fillRect(0, 0, 1150, 50);
+		gc.setStroke(Color.AZURE);
+		gc.setLineWidth(10);
+		gc.strokeRect(0, 0, 1150, 50);
+		gc.setFill(Color.LEMONCHIFFON);
+		gc.fillRect(0, 55, 50, 500);
+		gc.fillRect(550, 55, 50, 500);
+		gc.fillRect(1100, 55, 50, 500);
+		gc.fillRect(0, 550, 1150, 50);
 	}
 	
 	public void findPlayer(){ //use to find player and capture in the frame
