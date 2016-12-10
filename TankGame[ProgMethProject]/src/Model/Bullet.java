@@ -37,4 +37,12 @@ public class Bullet extends Entity implements Movable{
 	public void rotate(int dir) {
 		//can't roate
 	}
+	
+	public int getDamage() {
+		return damage;
+	}
+	
+	public int getSpeed() {
+		return speed;
+	}
 }
