@@ -20,7 +20,7 @@ public class GameUtility {
 	public static final int BULLET = 12*12;
 	public static final int OBSTACLE = 40*40;
 	
-	public int getWidth(Entity e) {
+	public static int getWidth(Entity e) {
 		if (e instanceof Player) {
 			return Player.WIDTH;
 		}
@@ -36,7 +36,7 @@ public class GameUtility {
 		else return 0;
 	}
 	
-	public int getHeight(Entity e) {
+	public static int getHeight(Entity e) {
 		if (e instanceof Player) {
 			return Player.HEIGHT;
 		}

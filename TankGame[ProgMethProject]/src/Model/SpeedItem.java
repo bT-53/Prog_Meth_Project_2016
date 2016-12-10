@@ -19,5 +19,6 @@ public class SpeedItem extends Item{
 	public void collect(Player player) {
 		player.increaseSpeed(1);
 		hp = 0;
+		System.out.println("Collect");
 	}
 }

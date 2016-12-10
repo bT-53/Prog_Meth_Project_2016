@@ -1,5 +1,6 @@
 package Main;
 
+import Logic.GameManager;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -52,6 +53,7 @@ public class Main extends Application{
 			public void handle(long now) {
 				// TODO Auto-generated method stub
 				gameScreen.update();
+				GameManager.checkCollision();
 				gameScreen.paintComponenet();
 //				GraphicsContext gc = canvas.getGraphicsContext2D();
 //				gc.setFill(Color.BLACK);
