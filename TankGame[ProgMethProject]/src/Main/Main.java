@@ -28,11 +28,8 @@ public class Main extends Application{
 		// TODO: ...
 		
 		gameScreen = new GameScreen();
-		gameScene = new Scene(gameScreen,1010,500);	
-//		Canvas canvas = new Canvas(1010,500);
-//		GridPane root = new GridPane();
-//		root.add(canvas, 0, 0);
-//		Scene scene = new Scene(root,1010,500);
+		gameScene = new Scene(gameScreen,1150,600);	
+
 		
 		
 
@@ -53,17 +50,8 @@ public class Main extends Application{
 			public void handle(long now) {
 				// TODO Auto-generated method stub
 				gameScreen.update();
-				GameManager.checkCollision();
 				gameScreen.paintComponenet();
-//				GraphicsContext gc = canvas.getGraphicsContext2D();
-//				gc.setFill(Color.BLACK);
-//				gc.fillRect(0, 0, 500, 500);
-//				gc.fillRect(510, 0, 500, 500);
-//				gc.setFill(Color.WHITE);
-//				gc.fillRect(235, 235, 30, 30);
-//				gc.drawImage(bg, 0, 0);
-				
-				
+
 			}
 		};
 		animation.start();

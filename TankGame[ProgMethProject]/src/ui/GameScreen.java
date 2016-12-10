@@ -1,5 +1,6 @@
 package ui;
 
+import Logic.GameManager;
 import Model.ATKItem;
 import Model.Bullet;
 import Model.Entity;
@@ -66,7 +67,7 @@ public class GameScreen extends StackPane{
 	public void update(){
 		frameUpdate(player1,0);
 		frameUpdate(player2,1);
-		
+		GameManager.checkCollision();
 		if(InputUtility.getKeyDown1()){
 			player1.setDirection(GameUtility.DOWN);
 			player1.move();
@@ -99,6 +100,14 @@ public class GameScreen extends StackPane{
 			player2.setDirection(GameUtility.UP);
 			player2.move();
 		}
+		if(InputUtility.getKeyShoot1()){
+			player1.attack();
+			
+		}
+		if(InputUtility.getKeyShoot2()){
+			player2.attack();
+			
+		}
 		
 	}
 	
@@ -122,6 +131,12 @@ public class GameScreen extends StackPane{
 		}else if(code.toString().equals("A")){
 			InputUtility.setKeyLeft2(true);
 		}
+		if(code.toString().equals("ENTER")){
+			InputUtility.setKeyShoot1(true);
+		}
+		if(code.toString().equals("SPACE")){
+			InputUtility.setKeyShoot2(true);
+		}
 	}
 	
 	public void keyReleased(KeyCode code){
@@ -142,6 +157,12 @@ public class GameScreen extends StackPane{
 			InputUtility.setKeyRight2(false);
 		}else if(code.toString().equals("A")){
 			InputUtility.setKeyLeft2(false);
+		}
+		if(code.toString().equals("ENTER")){
+			InputUtility.setKeyShoot1(false);
+		}
+		if(code.toString().equals("SPACE")){
+			InputUtility.setKeyShoot2(false);
 		}
 	}
 	

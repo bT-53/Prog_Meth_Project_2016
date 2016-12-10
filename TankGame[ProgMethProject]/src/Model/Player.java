@@ -19,7 +19,7 @@ public class Player extends Entity implements Movable{
 		this.name = name;
 		this.direction = direction;
 		atk = 1;
-		atkspeed = 2;
+		atkspeed = 9;
 		bulletsLimit = 1;
 		speed = 3;
 		this.tankColor = Color.BLUE;
@@ -44,6 +44,8 @@ public class Player extends Entity implements Movable{
 		gc.fillRect(x - WIDTH/2 , y - HEIGHT/2, 30, 30);
 		drawGun(gc, x, y);
 		drawWheel(gc, x, y);
+		gc.setFill(Color.YELLOW);
+		gc.fillText(name, x, y + WIDTH);
 	}
 	
 	public void drawGun(GraphicsContext gc, int x, int y){
@@ -102,6 +104,8 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseATK(int addATK) {
 		atk += addATK;
+		
+		if(atk > 5) atk = 5;
 	}
 	
 	public int getBullets() {
@@ -110,6 +114,8 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseBullets() {
 		bulletsLimit++;
+		
+		if(bulletsLimit > 5) bulletsLimit = 5;
 	}
 	
 	public int getATKSpeed() {
@@ -118,6 +124,8 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseATKSpedd(int addATKSpeed) {
 		atkspeed += addATKSpeed;
+		
+		if(atkspeed > 14) atkspeed = 13;
 	}
 	
 	public int getSpeed() {
@@ -126,6 +134,8 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseSpeed(int addSpeed) {
 		speed += addSpeed;
+		
+		if(speed > 8) speed = 8;
 	}
 	
 	public String getName(){
