@@ -1,10 +1,13 @@
 package ui;
 
+import Model.ATKItem;
+import Model.Bullet;
 import Model.Entity;
 import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
 import Model.SpeedItem;
+import Model.StrongObstacle;
 import Utility.GameUtility;
 import Utility.InputUtility;
 import javafx.scene.canvas.Canvas;
@@ -21,39 +24,29 @@ public class GameScreen extends StackPane{
 	private Canvas canvas;
 	private Image bg;
 	private Player player1, player2;
-//	private int currentX, currentY,speed,directionX, directionY;
 	private static int frameWidth, frameHeight;
 	private static int maxWidth = 1920 ; 
 	private static int maxHeight = 1160;
-//	private int currentX2, currentY2,speed2,directionX2, directionY2;
 	private int[] currentX, currentY , speed;
 	
 	public GameScreen(){
 		super();
 		currentX = new int[2];
 		currentY = new int[2];
-
 		speed = new int[2];
 		this.setPrefSize(1150, 600);
-//		this.currentX[0] = 100;
-//		this.currentY[0] = 100;
-//		this.speed[0] = 5;
-//		this.directionX[0] = 0;
-//		this.directionY[0] = 0;
 		frameHeight = 500;
 		frameWidth = 500;
-//		this.currentX[1] = 500;
-//		this.currentY[1] = 500;
-//		this.speed[1] = 5;
-//		this.directionX[1] = 0;
-//		this.directionY[1] = 0;
 		
 		player2 = new Player("SA",400,300,GameUtility.UP); 
 		IRenderableHolder.getInstance().addEntity(player2);
 		player1 = new Player("Natty", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
-		IRenderableHolder.getInstance().addEntity(new SpeedItem(100,100));
+		IRenderableHolder.getInstance().addEntity(new SpeedItem(100,150));
+		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,100));
+		IRenderableHolder.getInstance().addEntity(new Bullet(player1,300,300,GameUtility.UP, 9, 3));
 		findPlayer();
+		
 		
 		System.out.println(player1.getName()+player2.getName());
 		System.out.println(currentX[0] + " "+ currentX[1]);
@@ -211,6 +204,15 @@ public class GameScreen extends StackPane{
 	public void paintUI(GraphicsContext gc){
 		gc.setFill(Color.BLUE);
 		gc.fillRect(0, 0, 1150, 50);
+		gc.setStroke(Color.AZURE);
+		gc.setLineWidth(10);
+		gc.strokeRect(0, 0, 1150, 50);
+		gc.setFill(Color.LEMONCHIFFON);
+		gc.fillRect(0, 55, 50, 500);
+		gc.fillRect(550, 55, 50, 500);
+		gc.fillRect(1100, 55, 50, 500);
+		gc.fillRect(0, 550, 1150, 50);
+		
 	}
 	
 	public void findPlayer(){ //use to find player and capture in the frame

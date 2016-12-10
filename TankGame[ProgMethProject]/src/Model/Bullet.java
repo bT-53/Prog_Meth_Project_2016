@@ -5,23 +5,24 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Bullet extends Entity implements Movable{
-	public final static int WIDTH = 12;
-	public final static int HEIGHT = 12;
+	public final static int WIDTH = 10;
+	public final static int HEIGHT = 10;
 	protected Player owner;
 	int damage;
 	int speed;
 	int direction;
 	
-	public Bullet(Player player, int x, int y, int direction) {
+	public Bullet(Player player, int x, int y, int direction, int atkSpeed, int atk) {
 		super(1, x, y);
 		this.owner = player;
-		damage = 1;
+		damage = atk;
 		this.direction = direction;
+		speed = atkSpeed;
 	}
 	
 	@Override
 	public void draw(GraphicsContext gc, int x, int y ) {
-		gc.setFill(Color.BLUE);
+		gc.setFill(Color.YELLOW);
 		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	

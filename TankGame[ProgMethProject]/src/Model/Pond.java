@@ -3,10 +3,12 @@ package Model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Pond extends Obstacle implements BulletPassable {
+public class Pond extends Entity implements BulletPassable, Obstacle {
+	public final static int WIDTH = 40;
+	public final static int HEIGHT = 40;
 	
 	public Pond(int x, int y) {
-		super(x, y);
+		super(100,x, y);
 	}
 	
 	@Override

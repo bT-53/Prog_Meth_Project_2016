@@ -3,10 +3,10 @@ package Model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class WeakObstacle extends Obstacle{
+public class WeakObstacle extends Entity implements Obstacle{
 	
 	public WeakObstacle(int x, int y) {
-		super(x, y);
+		super(1, x, y);
 	}
 	
 	@Override
@@ -21,8 +21,8 @@ public class WeakObstacle extends Obstacle{
 	}
 	
 	@Override
-	public boolean isDestroyed() {
-		return hp <= 0;
+	public int getZ() {
+		return 1;
 	}
 	
 }
