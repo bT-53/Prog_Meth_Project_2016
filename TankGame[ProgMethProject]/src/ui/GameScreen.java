@@ -46,16 +46,12 @@ public class GameScreen extends StackPane{
 	
 	public GameScreen(){
 		super();
+		// initialize fields
 		currentX = new int[2];
 		currentY = new int[2];
 		speed = new int[2];
 		this.setPrefSize(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		
-		
-		player2 = new Player("Natty",400,300,GameUtility.UP); 
-		IRenderableHolder.getInstance().addEntity(player2);
-		player1 = new Player("Sa", 250, 250,GameUtility.UP);
-		IRenderableHolder.getInstance().addEntity(player1);
 		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
 		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,200));
 		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
@@ -65,7 +61,7 @@ public class GameScreen extends StackPane{
 		IRenderableHolder.getInstance().addEntity(new HPItem(450,300));
 		IRenderableHolder.getInstance().addEntity(new BulletItem(50,300));
 		
-		for(int y = -20; y <= maxHeight + 20; y += 40){
+		for(int y = -20; y <= maxHeight + 20; y += 40){// create boundary
 			if(y == -20 || y == maxHeight +20){
 				for(int x = 20; x <= maxWidth - 20; x += 40){
 					IRenderableHolder.getInstance().addEntity(new StrongObstacle(x,y));
@@ -75,18 +71,13 @@ public class GameScreen extends StackPane{
 				IRenderableHolder.getInstance().addEntity(new StrongObstacle(maxWidth +20,y));
 			}
 		}
-		findPlayer();
-		
-		System.out.println(player1.getName()+player2.getName());
-		System.out.println(currentX[0] + " "+ currentX[1]);
-
-		this.bg = IRenderableHolder.bg;
-		
-		System.out.println(bg.getHeight()+" "+bg.getWidth());
+		// use background from IRenderableHolder
+		this.bg = IRenderableHolder.bg; 
+		// create canvas
 		this.canvas = new Canvas(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		canvas.setVisible(true);			
 		
-		
+		// add canvas to gameScreen
 		this.getChildren().add(canvas);
 		
 	}

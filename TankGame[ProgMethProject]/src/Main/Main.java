@@ -46,7 +46,7 @@ public class Main extends Application{
 		this.primaryStage = primaryStage;
 		gameScreen = new GameScreen();
 		gameScene = new Scene(gameScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);	
-		startScreen = new StartScreen();
+		startScreen = new StartScreen(gameScreen);
 		startScene = new Scene(startScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		
 		

@@ -2,7 +2,11 @@ package ui;
 
 import Main.Main;
 import Model.IRenderableHolder;
+import Model.Player;
+import Utility.ColorUtility;
 import Utility.GameUtility;
+import Utility.NameFormatException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,11 +15,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 public class StartScreen extends StackPane{
 	private Button startButton, body1, body2 ,body3 ,body4 , gun1, gun2, gun3, gun4;
@@ -25,9 +32,11 @@ public class StartScreen extends StackPane{
 	private int imageWidth;
 	private static String style = "-fx-text-fill: white; -fx-font: bold 20pt \"Time News Roman\";";
 	private TextField player1TextField, player2TextField;
-	public StartScreen(){
+	private GameScreen gameScreen;
+	public StartScreen(GameScreen gameScreen){
 		super();
 		this.setVisible(true);
+		this.gameScreen = gameScreen;
 		
 		initializeGUI();
 		addListener();
@@ -36,9 +45,76 @@ public class StartScreen extends StackPane{
 	
 	public void addListener(){
 		startButton.setOnAction((ActionEvent e) -> {
-			Main.instance.ChangeScene();
-			Main.instance.startAnimation.stop();
+			try {
+				action();
+			} catch (NameFormatException e1) {
+				// TODO Auto-generated catch block
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("NameFormatError");
+				alert.setHeaderText(null);
+				alert.setContentText("-Name must not be white space.\n"
+						+"-Replicated name is not allowed.");
+				alert.show();
+			}
 		});
+		
+		body1.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorBodyPlayer1(Color.DARKBLUE);
+		});
+		
+		body2.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorBodyPlayer1(Color.GREEN);
+		});
+		
+		body3.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorBodyPlayer2(Color.ORANGE);
+		});
+		
+		body4.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorBodyPlayer2(Color.PINK);
+		});
+		
+		gun1.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorGunPlayer1(Color.WHITE);
+		});
+		
+		gun2.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorGunPlayer1(Color.BROWN);
+		});
+		
+		gun3.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorGunPlayer2(Color.PURPLE);
+		});
+		
+		gun4.setOnAction((ActionEvent e) -> {
+			ColorUtility.setColorGunPlayer2(Color.AQUAMARINE);
+		});
+	}
+	// Action when click startButton
+	public void action() throws NameFormatException{ 
+		if(player1TextField.getText().matches("^\\s*$") || player2TextField.getText().matches("^\\s*$")){
+			throw new NameFormatException(1);
+		}
+		else if(player1TextField.getText().equals(player2TextField.getText())){
+			throw new NameFormatException(0);
+		}
+		Main.instance.ChangeScene();
+		Main.instance.startAnimation.stop();
+		if(ColorUtility.getColorBodyPlayer2() != null && ColorUtility.getColorBodyPlayer1() != null 
+				&& ColorUtility.getColorGunPlayer2() != null && ColorUtility.getColorGunPlayer1() != null){
+		IRenderableHolder.getInstance().addEntity(new Player(player2TextField.getText(), 250, 
+				250, GameUtility.UP, ColorUtility.getColorBodyPlayer2(), ColorUtility.getColorGunPlayer2()));
+		IRenderableHolder.getInstance().addEntity(new Player(player1TextField.getText(), 1000, 
+				500, GameUtility.UP, ColorUtility.getColorBodyPlayer1(), ColorUtility.getColorGunPlayer1()));
+		}else{
+			IRenderableHolder.getInstance().addEntity(new Player(player2TextField.getText(), 250, 250, GameUtility.UP));
+			IRenderableHolder.getInstance().addEntity(new Player(player1TextField.getText(), 1000, 500, GameUtility.UP));
+		}
+		// set the new players to frame
+		gameScreen.findPlayer();
+		
+		// create the map here
+		
 	}
 	
 	public void initializeGUI(){
