@@ -1,14 +1,19 @@
 package ui;
 
+import java.util.List;
+
 import Logic.GameManager;
 import Model.ATKItem;
+import Model.ATKSpeedItem;
 import Model.Bullet;
 import Model.Entity;
 import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
+import Model.Pond;
 import Model.SpeedItem;
 import Model.StrongObstacle;
+import Model.WeakObstacle;
 import Utility.GameUtility;
 import Utility.InputUtility;
 import javafx.scene.canvas.Canvas;
@@ -34,6 +39,7 @@ public class GameScreen extends StackPane{
 		super();
 		currentX = new int[2];
 		currentY = new int[2];
+
 		speed = new int[2];
 		this.setPrefSize(1150, 600);
 		frameHeight = 500;
@@ -43,11 +49,24 @@ public class GameScreen extends StackPane{
 		IRenderableHolder.getInstance().addEntity(player2);
 		player1 = new Player("Natty", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
-		IRenderableHolder.getInstance().addEntity(new SpeedItem(100,150));
-		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,100));
-		IRenderableHolder.getInstance().addEntity(new Bullet(player1,300,300,GameUtility.UP, 9, 3));
-		findPlayer();
+		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
+		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
+		IRenderableHolder.getInstance().addEntity(new Bullet(player1,300,300));
+		IRenderableHolder.getInstance().addEntity(new ATKItem(250,300));
+		IRenderableHolder.getInstance().addEntity(new SpeedItem(150,300));
+		IRenderableHolder.getInstance().addEntity(new ATKSpeedItem(350,300));
 		
+		for(int y = -20; y <= 1180; y += 40){
+			if(y == -20 || y == 1180){
+				for(int x = 20; x <= 1900; x += 40){
+					IRenderableHolder.getInstance().addEntity(new StrongObstacle(x,y));
+				}
+			}else{
+				IRenderableHolder.getInstance().addEntity(new StrongObstacle(-20,y));
+				IRenderableHolder.getInstance().addEntity(new StrongObstacle(1940,y));
+			}
+		}
+		findPlayer();
 		
 		System.out.println(player1.getName()+player2.getName());
 		System.out.println(currentX[0] + " "+ currentX[1]);
@@ -67,7 +86,7 @@ public class GameScreen extends StackPane{
 	public void update(){
 		frameUpdate(player1,0);
 		frameUpdate(player2,1);
-		GameManager.checkCollision();
+		
 		if(InputUtility.getKeyDown1()){
 			player1.setDirection(GameUtility.DOWN);
 			player1.move();
@@ -101,14 +120,23 @@ public class GameScreen extends StackPane{
 			player2.move();
 		}
 		if(InputUtility.getKeyShoot1()){
-			player1.attack();
-			
+			player1.attack();	
 		}
 		if(InputUtility.getKeyShoot2()){
 			player2.attack();
-			
 		}
-		
+		List<IRenderable> entities = IRenderableHolder.getInstance().getEntities();
+		for (int i = entities.size()-1; i>=0; i--) {
+			if (entities.get(i) instanceof Bullet) {
+				((Bullet) entities.get(i)).move();
+			}
+		}
+		GameManager.checkCollision();
+		for (int i = entities.size()-1; i>=0; i--) {
+			if (entities.get(i).isDestroyed()) {
+				entities.remove(i);
+			}
+		}
 	}
 	
 	public void keyPressed(KeyCode code) {
@@ -233,7 +261,6 @@ public class GameScreen extends StackPane{
 		gc.fillRect(550, 55, 50, 500);
 		gc.fillRect(1100, 55, 50, 500);
 		gc.fillRect(0, 550, 1150, 50);
-		
 	}
 	
 	public void findPlayer(){ //use to find player and capture in the frame

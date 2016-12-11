@@ -12,7 +12,10 @@ public class WeakObstacle extends Entity implements Obstacle{
 	@Override
 	public void draw(GraphicsContext gc, int x, int y) {
 		gc.setFill(Color.BROWN);
-		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
+		gc.fillRect(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
+		gc.setStroke(Color.BLACK);
+		gc.setLineWidth(1);
+		gc.strokeRect(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	
 	@Override

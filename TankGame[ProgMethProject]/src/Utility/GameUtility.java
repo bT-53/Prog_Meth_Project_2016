@@ -12,8 +12,8 @@ public class GameUtility {
 	public static final int RIGHT = 1;
 	public static final int DOWN = 2;
 	public static final int LEFT = 3;
-	public static final int[]  DIR_Y = {-1,0,1,0};
-	public static final int[]  DIR_X = {0,1,0,-1};
+	public static final int[] DIR_Y = {-1,0,1,0};
+	public static final int[] DIR_X = {0,1,0,-1};
 	public static final int CLOCKWISE = 1;
 	public static final int COUNTERCLOCKWISE = -1;
 	public static final int PLAYERSIZE = 30*30;
@@ -33,7 +33,7 @@ public class GameUtility {
 		else if (e instanceof Obstacle) {
 			return Obstacle.WIDTH;
 		}
-		else return 0;
+		else return 40;
 	}
 	
 	public static int getHeight(Entity e) {
@@ -49,6 +49,6 @@ public class GameUtility {
 		else if (e instanceof Obstacle) {
 			return Obstacle.HEIGHT;
 		}
-		else return 0;
+		else return 40;
 	}
 }

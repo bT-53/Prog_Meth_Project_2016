@@ -19,6 +19,7 @@ public class Pond extends Entity implements BulletPassable, Obstacle {
 	@Override
 	public void draw(GraphicsContext gc, int x, int y ) {
 		gc.setFill(Color.BLUE);
-		gc.fillOval(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
+		gc.fillRect(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
+		
 	}
 }

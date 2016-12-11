@@ -23,6 +23,9 @@ public class StrongObstacle extends Entity implements Obstacle{
 	public void draw(GraphicsContext gc, int x, int y ) {
 		gc.setFill(Color.GRAY);
 		gc.fillRect(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
+		gc.setStroke(Color.BLACK);
+		gc.setLineWidth(1);
+		gc.strokeRect(x - WIDTH/2 , y - HEIGHT/2, WIDTH, HEIGHT);
 	}
 	
 	@Override

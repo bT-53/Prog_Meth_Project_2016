@@ -48,7 +48,7 @@ public class Player extends Entity implements Movable{
 		gc.fillText(name, x, y + WIDTH);
 	}
 	
-	public void drawGun(GraphicsContext gc, int x, int y){
+	private void drawGun(GraphicsContext gc, int x, int y){
 		gc.setFill(this.gunColor);
 		gc.fillOval(x - 7.5, y - 7.5, 16, 16);
 		if(direction == GameUtility.UP){
@@ -62,7 +62,7 @@ public class Player extends Entity implements Movable{
 		}
 	}
 	
-	public void drawWheel(GraphicsContext gc, int x, int y){
+	private void drawWheel(GraphicsContext gc, int x, int y){
 		gc.setLineWidth(1);
 		gc.setStroke(Color.AZURE);
 		if(direction == GameUtility.UP || direction == GameUtility.DOWN){
@@ -71,6 +71,19 @@ public class Player extends Entity implements Movable{
 		}else if(direction == GameUtility.RIGHT || direction == GameUtility.LEFT){
 			gc.strokeRect(x - WIDTH/2, y - HEIGHT/2, WIDTH, 4);
 			gc.strokeRect(x - WIDTH/2d, y + HEIGHT/2 - 4, WIDTH , 4);
+		}
+	}
+	
+	@Override
+	public int getZ() {
+		return 1; //except Pond has z = 0.
+	}
+	
+	@Override
+	public void hit(int dmg) {
+		hp -= dmg;
+		if (hp < 0) {
+			hp = 0;
 		}
 	}
 	
@@ -86,8 +99,10 @@ public class Player extends Entity implements Movable{
 	}
 	
 	public void attack() { // shoot the bullet
-		Bullet bullet = new Bullet(this, x, y, direction, atkspeed, atk);
+		if (bulletsLimit <= 0) return;
+		Bullet bullet = new Bullet(this, x, y);
 		IRenderableHolder.getInstance().addEntity(bullet);
+		bulletsLimit--;
 	}
 	
 	public int getHP() {
@@ -104,8 +119,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseATK(int addATK) {
 		atk += addATK;
-		
-		if(atk > 5) atk = 5;
+		if (atk > 5) atk = 5;
 	}
 	
 	public int getBullets() {
@@ -114,8 +128,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseBullets() {
 		bulletsLimit++;
-		
-		if(bulletsLimit > 5) bulletsLimit = 5;
+		if (bulletsLimit > 5) bulletsLimit = 5;
 	}
 	
 	public int getATKSpeed() {
@@ -124,8 +137,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseATKSpedd(int addATKSpeed) {
 		atkspeed += addATKSpeed;
-		
-		if(atkspeed > 14) atkspeed = 13;
+		if (atkspeed > 13) atkspeed = 13;
 	}
 	
 	public int getSpeed() {
@@ -134,8 +146,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseSpeed(int addSpeed) {
 		speed += addSpeed;
-		
-		if(speed > 8) speed = 8;
+		if (speed > 8) speed = 8;
 	}
 	
 	public String getName(){
