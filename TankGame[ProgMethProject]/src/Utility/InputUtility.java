@@ -11,6 +11,8 @@ public class InputUtility {
 	private static boolean holdKeyLeft2 = false;
 	private static boolean holdKeyShoot1 = false;
 	private static boolean holdKeyShoot2 = false;
+	private static boolean triggeredKeyShoot1 = false;
+	private static boolean triggeredKeyShoot2 = false;
 	
 	public static void setKeyUp1(boolean t){
 		holdKeyUp1 = t;
@@ -52,6 +54,14 @@ public class InputUtility {
 		holdKeyShoot2 = t;
 	}
 	
+	public static void setTriggeredKeyShoot1(boolean t){
+		triggeredKeyShoot1 = t;
+	}
+	
+	public static void setTriggeredKeyShoot2(boolean t){
+		triggeredKeyShoot2 = t;
+	}
+	
 	public static boolean getKeyUp1(){
 		return holdKeyUp1;
 	}
@@ -90,5 +100,13 @@ public class InputUtility {
 	
 	public static boolean getKeyShoot2(){
 		return holdKeyShoot2;
+	}
+	
+	public static boolean getTriggeredKeyShoot1(){
+		return triggeredKeyShoot1;
+	}
+	
+	public static boolean getTriggeredKeyShoot2(){
+		return triggeredKeyShoot2;
 	}
 }

@@ -51,7 +51,6 @@ public class GameScreen extends StackPane{
 		IRenderableHolder.getInstance().addEntity(player1);
 		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
 		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
-		IRenderableHolder.getInstance().addEntity(new Bullet(player1,300,300));
 		IRenderableHolder.getInstance().addEntity(new ATKItem(250,300));
 		IRenderableHolder.getInstance().addEntity(new SpeedItem(150,300));
 		IRenderableHolder.getInstance().addEntity(new ATKSpeedItem(350,300));
@@ -72,7 +71,6 @@ public class GameScreen extends StackPane{
 		System.out.println(player1.getName()+player2.getName());
 		System.out.println(currentX[0] + " "+ currentX[1]);
 
-		
 		this.bg = IRenderableHolder.bg;
 		
 		System.out.println(bg.getHeight()+" "+bg.getWidth());
@@ -121,11 +119,18 @@ public class GameScreen extends StackPane{
 			player2.move();
 		}
 		if(InputUtility.getKeyShoot1()){
-			player1.attack();	
+			if(!InputUtility.getTriggeredKeyShoot1()){
+				InputUtility.setTriggeredKeyShoot1(true);
+				player1.attack();
+			}
 		}
 		if(InputUtility.getKeyShoot2()){
-			player2.attack();
+			if(!InputUtility.getTriggeredKeyShoot2()){
+				InputUtility.setTriggeredKeyShoot2(true);
+				player2.attack();
+			}
 		}
+		
 		List<IRenderable> entities = IRenderableHolder.getInstance().getEntities();
 		for (int i = entities.size()-1; i>=0; i--) {
 			if (entities.get(i) instanceof Bullet) {
@@ -138,6 +143,7 @@ public class GameScreen extends StackPane{
 				entities.remove(i);
 			}
 		}
+		
 	}
 	
 	public void keyPressed(KeyCode code) {
@@ -189,9 +195,11 @@ public class GameScreen extends StackPane{
 		}
 		if(code.toString().equals("ENTER")){
 			InputUtility.setKeyShoot1(false);
+			InputUtility.setTriggeredKeyShoot1(false);
 		}
 		if(code.toString().equals("SPACE")){
 			InputUtility.setKeyShoot2(false);
+			InputUtility.setTriggeredKeyShoot2(false);
 		}
 	}
 	

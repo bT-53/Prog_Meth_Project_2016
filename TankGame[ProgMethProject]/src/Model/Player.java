@@ -34,7 +34,7 @@ public class Player extends Entity implements Movable{
 		this.name = name;
 		this.direction = direction;
 		atk = 1;
-		atkspeed = 2;
+		atkspeed = 9;
 		bulletsLimit = 1;
 		speed = 3;
 		this.tankColor = tankColor;
@@ -121,6 +121,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseHP(int addHP) {
 		hp += addHP;
+		if(hp > 20) hp = 20;
 	}
 	
 	public int getATK() {
