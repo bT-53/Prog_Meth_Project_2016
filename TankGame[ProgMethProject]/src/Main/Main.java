@@ -1,6 +1,7 @@
 package Main;
 
 import Logic.GameManager;
+import Utility.GameUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,10 +15,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.GameScreen;
+import ui.StartScreen;
 
 public class Main extends Application{
-	private GameScreen gameScreen ;
+	public static Main instance;
+	private Stage primaryStage;
+	private Scene startScene;
 	private Scene gameScene;
+	
+	private StartScreen startScreen;
+	private GameScreen gameScreen ;
+	private AnimationTimer animation;
+	
+	private boolean isGameSceneShown = false;
 	
 	public static void main(String args[]) {
 		launch(args);
@@ -26,10 +36,13 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		// TODO: ...
-		
+		instance = this;
+		this.primaryStage = primaryStage;
 		gameScreen = new GameScreen();
-		gameScene = new Scene(gameScreen,1150,600);
 		
+		gameScene = new Scene(gameScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);	
+		startScreen = new StartScreen();
+		startScene = new Scene(startScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		
 
 		gameScene.setOnKeyPressed((KeyEvent e) ->{
@@ -43,7 +56,7 @@ public class Main extends Application{
 			gameScreen.keyReleased(e.getCode());
 		});
 		
-		AnimationTimer animation = new AnimationTimer() {
+		animation = new AnimationTimer() {
 			
 			@Override
 			public void handle(long now) {
@@ -52,16 +65,24 @@ public class Main extends Application{
 				gameScreen.paintComponenet();
 			}
 		};
-		animation.start();
 		
-		primaryStage.setScene(gameScene);
+		primaryStage.setScene(startScene);
 		primaryStage.sizeToScene();
 		primaryStage.show();
 		
 	}
 	
-	
-	
-	
+	public synchronized void ChangeScene(){
+		if (this.isGameSceneShown){
+			this.primaryStage.setScene(startScene);
+			System.out.println("To Config Screen");
+		}
+		else{
+			this.primaryStage.setScene(gameScene);
+			animation.start();
+			System.out.println("To Game Screen");
+		}
+		this.isGameSceneShown = !this.isGameSceneShown;
+	} 
 	
 }

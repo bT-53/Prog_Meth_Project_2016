@@ -1,6 +1,7 @@
 package Model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class SpeedItem extends Item{
@@ -13,6 +14,11 @@ public class SpeedItem extends Item{
 	public void draw(GraphicsContext gc,int x,int y) {
 		gc.setFill(Color.YELLOW);
 		gc.fillRoundRect(x-WIDTH/2, y-HEIGHT/2, WIDTH, HEIGHT, 10, 10);
+		gc.setStroke(Color.WHITE);
+		gc.setLineWidth(1);
+		gc.strokeRoundRect(x-WIDTH/2, y-HEIGHT/2, WIDTH, HEIGHT, 10, 10);
+		Image image = IRenderableHolder.speedIcon;
+		gc.drawImage(image, x-WIDTH/2, y-HEIGHT/2);
 	}
 	
 	@Override

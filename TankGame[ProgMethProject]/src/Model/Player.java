@@ -1,5 +1,8 @@
 package Model;
 
+import com.sun.javafx.tk.FontLoader;
+import com.sun.javafx.tk.Toolkit;
+
 import Utility.GameUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -44,8 +47,7 @@ public class Player extends Entity implements Movable{
 		gc.fillRect(x - WIDTH/2 , y - HEIGHT/2, 30, 30);
 		drawGun(gc, x, y);
 		drawWheel(gc, x, y);
-		gc.setFill(Color.YELLOW);
-		gc.fillText(name, x, y + WIDTH);
+		drawName(gc,x,y);
 	}
 	
 	private void drawGun(GraphicsContext gc, int x, int y){
@@ -72,6 +74,13 @@ public class Player extends Entity implements Movable{
 			gc.strokeRect(x - WIDTH/2, y - HEIGHT/2, WIDTH, 4);
 			gc.strokeRect(x - WIDTH/2d, y + HEIGHT/2 - 4, WIDTH , 4);
 		}
+	}
+	
+	private void drawName(GraphicsContext gc, int x, int y){
+		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+		double font_width = fontLoader.computeStringWidth(name, gc.getFont());
+		gc.setFill(Color.YELLOW);
+		gc.fillText(name, x - font_width/2, y + WIDTH);
 	}
 	
 	@Override
@@ -111,6 +120,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseHP(int addHP) {
 		hp += addHP;
+		if (hp > 20) hp = 20;
 	}
 	
 	public int getATK() {
@@ -137,7 +147,7 @@ public class Player extends Entity implements Movable{
 	
 	public void increaseATKSpedd(int addATKSpeed) {
 		atkspeed += addATKSpeed;
-		if (atkspeed > 13) atkspeed = 13;
+		if (atkspeed > 14) atkspeed = 14;
 	}
 	
 	public int getSpeed() {
