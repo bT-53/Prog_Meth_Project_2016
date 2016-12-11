@@ -3,6 +3,7 @@ package ui;
 import java.util.List;
 
 import Logic.GameManager;
+import Main.Main;
 import Model.ATKItem;
 import Model.ATKSpeedItem;
 import Model.Bullet;
@@ -17,13 +18,18 @@ import Model.StrongObstacle;
 import Model.WeakObstacle;
 import Utility.GameUtility;
 import Utility.InputUtility;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 
 public class GameScreen extends StackPane{
@@ -45,9 +51,9 @@ public class GameScreen extends StackPane{
 		this.setPrefSize(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		
 		
-		player2 = new Player("SA",400,300,GameUtility.UP); 
+		player2 = new Player("Natty",400,300,GameUtility.UP); 
 		IRenderableHolder.getInstance().addEntity(player2);
-		player1 = new Player("Natty", 250, 250,GameUtility.UP);
+		player1 = new Player("Sa", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
 		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
 		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
@@ -144,6 +150,33 @@ public class GameScreen extends StackPane{
 			}
 		}
 		
+		Platform.runLater(()->{
+			if (player1.isDestroyed() && player2.isDestroyed()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("GAME END!!");
+				alert.setHeaderText(null);
+				alert.setContentText("DRAW");
+				Main.instance.animation.stop();
+				alert.showAndWait();
+			}
+			else if (player1.isDestroyed()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("GAME END!!");
+				alert.setHeaderText(null);
+				alert.setContentText(player2.getName() + " WINS");
+				Main.instance.animation.stop();
+				alert.showAndWait();
+			}
+			else if (player2.isDestroyed()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("GAME END!!");
+				alert.setHeaderText(null);
+				alert.setContentText(player1.getName() + " WINS");
+				Main.instance.animation.stop();
+				alert.showAndWait();
+			}
+		});
+		
 	}
 	
 	public void keyPressed(KeyCode code) {
@@ -222,18 +255,19 @@ public class GameScreen extends StackPane{
 		paintFrame1(gc);
 		paintFrame2(gc);
 		paintUI(gc);
+		paintStatus(gc);
 
 	}
 	
 	private void paintFrame1(GraphicsContext gc){ //draw frame1 the right frame
 		WritableImage shownFrame1 = new WritableImage(bg.getPixelReader(), currentX[0], currentY[0],frameWidth , frameHeight);
-		gc.drawImage(shownFrame1, 600, 50);
+		gc.drawImage(shownFrame1, 550, 25);
 		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
 			Entity p = (Entity)r;
 			
 			if(isInFrame(p.getX(), p.getY(), currentX[0], currentY[0])){
-				int x = 600 + p.getX() - currentX[0];
-				int y = 50 +  p.getY() - currentY[0];
+				int x = 550 + p.getX() - currentX[0];
+				int y = 25 +  p.getY() - currentY[0];
 				p.draw(gc, x, y);
 			}
 		}
@@ -241,13 +275,13 @@ public class GameScreen extends StackPane{
 	
 	private void paintFrame2(GraphicsContext gc){//draw frame2 the left frame
 		WritableImage shownFrame2 = new WritableImage(bg.getPixelReader(), currentX[1], currentY[1],frameWidth , frameHeight);
-		gc.drawImage(shownFrame2, 50, 50);
+		gc.drawImage(shownFrame2, 25, 25);
 		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
 			Entity p = (Entity)r;
 			
 			if(isInFrame(p.getX(), p.getY(), currentX[1], currentY[1])){
-				int x = 50 + p.getX() - currentX[1];
-				int y = 50 +  p.getY() - currentY[1];
+				int x = 25 + p.getX() - currentX[1];
+				int y = 25 +  p.getY() - currentY[1];
 				p.draw(gc, x, y);
 			}
 		}
@@ -255,11 +289,35 @@ public class GameScreen extends StackPane{
 	
 	private void paintUI(GraphicsContext gc){
 		gc.setFill(Color.LEMONCHIFFON);
-		gc.fillRect(0, 0, 1150, 50);
-		gc.fillRect(0, 50, 50, 500);
-		gc.fillRect(550, 50, 50, 500);
-		gc.fillRect(1100, 50, 50, 500);
-		gc.fillRect(0, 550, 1150, 50);
+		gc.fillRect(0, 0, 1075, 25);
+		gc.fillRect(0, 25, 25, 500);
+		gc.fillRect(525, 25, 25, 500);
+		gc.fillRect(1050, 25, 25, 500);
+		gc.fillRect(0, 525, 1075, 125);
+	}
+	
+	private void paintStatus(GraphicsContext gc){
+		gc.setFill(Color.WHITE);
+		gc.fillRoundRect(25, 530, 500, 115 , 10, 10);
+		gc.fillRoundRect(550, 530, 500, 115 , 10, 10);
+		Font font = Font.font("Times New Roman", FontWeight.LIGHT, 20);
+		gc.setFont(font);
+		gc.setFill(Color.BLACK);
+		gc.fillText(player2.getName(), 30, 550);
+		gc.fillText(player1.getName(), 555, 550);
+		Font little_font = Font.font("Times New Roman", FontWeight.LIGHT, 15);
+		gc.setFont(little_font);
+		gc.fillText("HP: "+player2.getHP()+"/20", 30, 580);
+		gc.fillText("Speed: "+player2.getSpeed()+"/8", 30, 600);
+		gc.fillText("ATK: "+player2.getATK()+"/5", 30, 620);
+		gc.fillText("ATKSpeed: "+player2.getATKSpeed()+"/13", 280, 580);
+		gc.fillText("Bullet: "+player2.getBullets()+"/5", 280, 600);
+		
+		gc.fillText("HP: "+player1.getHP()+"/20", 555, 580);
+		gc.fillText("Speed: "+player1.getSpeed()+"/8", 555, 600);
+		gc.fillText("ATK: "+player1.getATK()+"/5", 555, 620);
+		gc.fillText("ATKSpeed: "+player1.getATKSpeed()+"/13", 805, 580);
+		gc.fillText("Bullet: "+player1.getBullets()+"/5", 805, 600);
 	}
 	
 	public void findPlayer(){ //use to find player and capture in the frame

@@ -63,7 +63,7 @@ public class GameManager {
 				return;
 			}
 			else if (e2 instanceof Player) {
-				if (((Bullet) e1).getOwner().equals(e2)) {
+				if (((Bullet) e1).getOwner().getName().equals(((Player) e2).getName())) {
 					return;
 				}
 				int dmg = ((Bullet)e1).getDamage();
@@ -83,8 +83,7 @@ public class GameManager {
 				return;
 			}
 			else if (e1 instanceof Player) {
-				if (((Bullet) e2).getOwner().equals(e1)) {
-					System.out.println("WTF");
+				if (((Bullet) e2).getOwner().getName().equals(((Player) e1).getName())) {
 					return;
 				}
 				int dmg = ((Bullet)e2).getDamage();
@@ -159,6 +158,7 @@ public class GameManager {
 			for (int j=i+1; j<entities.size(); j++) {
 				Entity e1 = (Entity)entities.get(i);
 				Entity e2 = (Entity)entities.get(j);
+				if(e1.isDestroyed() || e2.isDestroyed()) continue;
 				if (isCollide(e1, e2) || isCollide(e2, e1)){
 					collide(e1, e2);
 				}

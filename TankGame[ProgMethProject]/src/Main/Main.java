@@ -24,7 +24,7 @@ public class Main extends Application{
 	private Scene gameScene;
 	private StartScreen startScreen;
 	private GameScreen gameScreen ;
-	private AnimationTimer animation;
+	public  AnimationTimer animation;
 	
 	private boolean isGameSceneShown = false;
 	
