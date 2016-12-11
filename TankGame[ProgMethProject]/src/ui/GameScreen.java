@@ -6,6 +6,7 @@ import Logic.GameManager;
 import Model.ATKItem;
 import Model.ATKSpeedItem;
 import Model.Bullet;
+import Model.BulletItem;
 import Model.Entity;
 import Model.IRenderable;
 import Model.IRenderableHolder;
@@ -55,6 +56,7 @@ public class GameScreen extends StackPane{
 		IRenderableHolder.getInstance().addEntity(new ATKItem(250,300));
 		IRenderableHolder.getInstance().addEntity(new SpeedItem(150,300));
 		IRenderableHolder.getInstance().addEntity(new ATKSpeedItem(350,300));
+		IRenderableHolder.getInstance().addEntity(new BulletItem(50,300));
 		
 		for(int y = -20; y <= 1180; y += 40){
 			if(y == -20 || y == 1180){

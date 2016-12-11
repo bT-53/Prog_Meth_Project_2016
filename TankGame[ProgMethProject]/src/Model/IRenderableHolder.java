@@ -14,7 +14,7 @@ public class IRenderableHolder {
 	private static final IRenderableHolder instance = new IRenderableHolder();
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
-	public static Image bg;
+	public static Image bg, ATKSpeedIcon, ATKIcon, speedIcon, bulletIcon;
 	public static AudioClip shootingSound;
 	public static AudioClip deathSound;
 	private static String shoot = "shootingSound.wav";
@@ -40,6 +40,10 @@ public class IRenderableHolder {
 	private static void loadResource() {
 		// TODO Auto-generated method stub
 		bg = new Image(ClassLoader.getSystemResource("bg.png").toString());
+		ATKSpeedIcon = new Image(ClassLoader.getSystemResource("ATKspeed.png").toString());
+		ATKIcon = new Image(ClassLoader.getSystemResource("ATK.png").toString());
+		speedIcon = new Image(ClassLoader.getSystemResource("Speed.png").toString());
+		bulletIcon = new Image(ClassLoader.getSystemResource("Bullet.png").toString());
 		}
 
 	public List<IRenderable> getEntities() {
