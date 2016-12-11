@@ -3,6 +3,7 @@ package ui;
 import java.util.List;
 
 import Logic.GameManager;
+import Main.Main;
 import Model.ATKItem;
 import Model.ATKSpeedItem;
 import Model.Bullet;
@@ -17,8 +18,11 @@ import Model.StrongObstacle;
 import Model.WeakObstacle;
 import Utility.GameUtility;
 import Utility.InputUtility;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
@@ -144,6 +148,32 @@ public class GameScreen extends StackPane{
 			}
 		}
 		
+		Platform.runLater(()->{
+			if (player1.isDestroyed() && player2.isDestroyed()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("GAME END!!");
+				alert.setHeaderText(null);
+				alert.setContentText("DRAW");
+				Main.instance.animation.stop();
+				alert.showAndWait();
+			}
+			else if (player1.isDestroyed()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("GAME END!!");
+				alert.setHeaderText(null);
+				alert.setContentText(player2.getName() + " WINS");
+				Main.instance.animation.stop();
+				alert.showAndWait();
+			}
+			else if (player2.isDestroyed()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("GAME END!!");
+				alert.setHeaderText(null);
+				alert.setContentText(player1.getName() + " WINS");
+				Main.instance.animation.stop();
+				alert.showAndWait();
+			}
+		});
 	}
 	
 	public void keyPressed(KeyCode code) {

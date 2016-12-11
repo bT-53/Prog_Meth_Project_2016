@@ -4,9 +4,12 @@ import Logic.GameManager;
 import Utility.GameUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
@@ -25,7 +28,7 @@ public class Main extends Application{
 	
 	private StartScreen startScreen;
 	private GameScreen gameScreen ;
-	private AnimationTimer animation;
+	public AnimationTimer animation;
 	
 	private boolean isGameSceneShown = false;
 	
