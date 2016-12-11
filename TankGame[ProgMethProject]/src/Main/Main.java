@@ -1,7 +1,12 @@
 package Main;
 
+import java.util.List;
+
 import Logic.GameManager;
+import Logic.ItemProducer;
+import Logic.ThreadsHolder;
 import Utility.GameUtility;
+import Utility.RandomUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -40,6 +45,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception{
 		// TODO: ...
 		instance = this;
+		RandomUtility.init();
 		this.primaryStage = primaryStage;
 		gameScreen = new GameScreen();
 		
@@ -66,6 +72,12 @@ public class Main extends Application{
 				// TODO Auto-generated method stub
 				gameScreen.update();
 				gameScreen.paintComponenet();
+				List<Thread> threads = ThreadsHolder.instance.getThreads();
+				for (int i=threads.size()-1; i>=0; i--) {
+					if (!threads.get(i).isAlive()) {
+						threads.remove(i);
+					}
+				}
 			}
 		};
 		
@@ -83,6 +95,9 @@ public class Main extends Application{
 		else{
 			this.primaryStage.setScene(gameScene);
 			animation.start();
+			ItemProducer ip = new ItemProducer();
+			ThreadsHolder.instance.addThread(ip);
+			ip.start();
 			System.out.println("To Game Screen");
 		}
 		this.isGameSceneShown = !this.isGameSceneShown;

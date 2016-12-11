@@ -25,4 +25,8 @@ public abstract class Item extends Entity implements BulletPassable{
 	}
 	
 	public abstract void collect(Player player);
+	
+	public synchronized void destroy() {
+		hp = 0;
+	}
 }

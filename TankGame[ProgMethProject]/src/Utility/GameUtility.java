@@ -19,8 +19,8 @@ public class GameUtility {
 	public static final int PLAYERSIZE = 30*30;
 	public static final int BULLET = 12*12;
 	public static final int OBSTACLE = 40*40;
-	public static final int GAMESCREEN_WIDTH = 1150;
-	public static final int GAMESCREEN_HEIGHT = 600;
+	public static final int GAMESCREEN_WIDTH = 1075;
+	public static final int GAMESCREEN_HEIGHT = 650;
 	
 	public static int getWidth(Entity e) {
 		if (e instanceof Player) {

@@ -6,6 +6,8 @@ import com.sun.javafx.tk.Toolkit;
 import Utility.GameUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class Player extends Entity implements Movable{
 	public final static int WIDTH = 30;
@@ -77,6 +79,8 @@ public class Player extends Entity implements Movable{
 	}
 	
 	private void drawName(GraphicsContext gc, int x, int y){
+		Font font = Font.font("Times New Roman", FontWeight.LIGHT, 14);
+		gc.setFont(font);
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 		double font_width = fontLoader.computeStringWidth(name, gc.getFont());
 		gc.setFill(Color.YELLOW);

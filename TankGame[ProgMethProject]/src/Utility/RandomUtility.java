@@ -6,6 +6,7 @@ public class RandomUtility {
 	private static Random rand;
 	
 	public static void init() {
+		rand = new Random();
 		rand.setSeed(97);
 	}
 	

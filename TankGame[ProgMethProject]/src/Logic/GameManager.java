@@ -2,6 +2,7 @@ package Logic;
 
 import java.util.List;
 
+import Main.Main;
 import Model.ATKItem;
 import Model.ATKSpeedItem;
 import Model.Bullet;
@@ -18,10 +19,12 @@ import Model.WeakObstacle;
 import Utility.GameUtility;
 import Utility.Geometry;
 import Utility.RandomUtility;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class GameManager {
 	
-	private static boolean isCollide(Entity e1, Entity e2) {
+	public static boolean isCollide(Entity e1, Entity e2) {
 		//TODO: wait for width and size of each entity
 		int dx1 = GameUtility.getWidth(e1)/2;
 		int dy1 = GameUtility.getHeight(e1)/2;
@@ -166,43 +169,34 @@ public class GameManager {
 		}
 	}
 
-	public static void buildObstacle() {
-		//TODO: wait for width and size of each entity & number of obstacle (range)
-		int obstaclesNumber = RandomUtility.random(10, 20);
-		while (obstaclesNumber > 0) {
-			int x = RandomUtility.random(25);
-			int y = RandomUtility.random(25);
-			while (true) { // TODO: check if can place here
-				x = RandomUtility.random(25);
-				y = RandomUtility.random(25);
-				break;
-			}
-			WeakObstacle obstacle = new WeakObstacle(x, y);
-			IRenderableHolder.getInstance().addEntity(obstacle);
-			obstaclesNumber --;
-		}
-	}
+//	public static void buildObstacle() {
+//		//TODO: wait for width and size of each entity & number of obstacle (range)
+//		int obstaclesNumber = RandomUtility.random(10, 20);
+//		while (obstaclesNumber > 0) {
+//			int x = RandomUtility.random(25);
+//			int y = RandomUtility.random(25);
+//			while (true) { // TODO: check if can place here
+//				x = RandomUtility.random(25);
+//				y = RandomUtility.random(25);
+//				break;
+//			}
+//			WeakObstacle obstacle = new WeakObstacle(x, y);
+//			IRenderableHolder.getInstance().addEntity(obstacle);
+//			obstaclesNumber --;
+//		}
+//	}
 	
-	public static void buildItem() {
-		//TODO: wait for width and size of each entity & number of obstacle (range)
-		int x = RandomUtility.random(25);
-		int y = RandomUtility.random(25);
-		while (true) { // TODO: check if can place here
-			x = RandomUtility.random(25);
-			y = RandomUtility.random(25);
-			break;
+	public static void endGame(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("GAME END!!");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		Main.instance.animation.stop();
+		for (Thread t: ThreadsHolder.instance.getThreads()) {
+			t.interrupt();
 		}
-		int type = RandomUtility.random(6);
-		Item item;
-		switch(type) {
-		case 1: item = new ATKItem(x, y); break;
-		case 2: item = new ATKSpeedItem(x, y); break;
-		case 3: item = new BulletItem(x, y); break;
-		case 4: item = new HPItem(x, y); break;
-		case 5: item = new SpeedItem(x, y); break;
-		default: return;
-		}
-		IRenderableHolder.getInstance().addEntity(item);
+		ThreadsHolder.instance.getThreads().clear();
+		alert.showAndWait();
 	}
 	
 }

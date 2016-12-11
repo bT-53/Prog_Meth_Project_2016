@@ -32,7 +32,7 @@ public class IRenderableHolder {
 		loadResource();
 	}
 	
-	public void addEntity(IRenderable e) {
+	public synchronized void addEntity(IRenderable e) {
 		entities.add(e);
 		Collections.sort(entities, comparator);
 	}
