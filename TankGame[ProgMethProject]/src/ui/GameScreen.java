@@ -31,7 +31,8 @@ public class GameScreen extends StackPane{
 	private Canvas canvas;
 	private Image bg;
 	private Player player1, player2;
-	private static int frameWidth, frameHeight;
+	private static int frameWidth = 500;
+	private static int frameHeight = 500;
 	private static int maxWidth = 1920 ; 
 	private static int maxHeight = 1160;
 	private int[] currentX, currentY , speed;
@@ -40,11 +41,9 @@ public class GameScreen extends StackPane{
 		super();
 		currentX = new int[2];
 		currentY = new int[2];
-
 		speed = new int[2];
-		this.setPrefSize(1150, 600);
-		frameHeight = 500;
-		frameWidth = 500;
+		this.setPrefSize(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
+		
 		
 		player2 = new Player("SA",400,300,GameUtility.UP); 
 		IRenderableHolder.getInstance().addEntity(player2);
@@ -58,14 +57,14 @@ public class GameScreen extends StackPane{
 		IRenderableHolder.getInstance().addEntity(new ATKSpeedItem(350,300));
 		IRenderableHolder.getInstance().addEntity(new BulletItem(50,300));
 		
-		for(int y = -20; y <= 1180; y += 40){
-			if(y == -20 || y == 1180){
-				for(int x = 20; x <= 1900; x += 40){
+		for(int y = -20; y <= maxHeight + 20; y += 40){
+			if(y == -20 || y == maxHeight +20){
+				for(int x = 20; x <= maxWidth - 20; x += 40){
 					IRenderableHolder.getInstance().addEntity(new StrongObstacle(x,y));
 				}
 			}else{
 				IRenderableHolder.getInstance().addEntity(new StrongObstacle(-20,y));
-				IRenderableHolder.getInstance().addEntity(new StrongObstacle(1940,y));
+				IRenderableHolder.getInstance().addEntity(new StrongObstacle(maxWidth +20,y));
 			}
 		}
 		findPlayer();
@@ -77,7 +76,7 @@ public class GameScreen extends StackPane{
 		this.bg = IRenderableHolder.bg;
 		
 		System.out.println(bg.getHeight()+" "+bg.getWidth());
-		this.canvas = new Canvas(1150,600);
+		this.canvas = new Canvas(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		canvas.setVisible(true);			
 		
 		
@@ -211,20 +210,14 @@ public class GameScreen extends StackPane{
 	
 	public void paintComponenet(){
 		GraphicsContext gc = this.canvas.getGraphicsContext2D();
-		gc.clearRect(0, 0, 1150, 600);
+		gc.clearRect(0, 0, GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		paintFrame1(gc);
 		paintFrame2(gc);
 		paintUI(gc);
-//		System.out.println(""+currentX[1]+" "+currentX[0]);
-//		gc.setFill(Color.BEIGE);
-//		gc.fillRect(500, 0, 10, 500);
-//		gc.fillRect(235, 235, 30, 30);
-//		gc.fillOval(270, 270, 12, 12);
-		
-		
+
 	}
 	
-	public void paintFrame1(GraphicsContext gc){ //draw frame1
+	private void paintFrame1(GraphicsContext gc){ //draw frame1 the right frame
 		WritableImage shownFrame1 = new WritableImage(bg.getPixelReader(), currentX[0], currentY[0],frameWidth , frameHeight);
 		gc.drawImage(shownFrame1, 600, 50);
 		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
@@ -238,7 +231,7 @@ public class GameScreen extends StackPane{
 		}
 	}
 	
-	public void paintFrame2(GraphicsContext gc){//draw frame2
+	private void paintFrame2(GraphicsContext gc){//draw frame2 the left frame
 		WritableImage shownFrame2 = new WritableImage(bg.getPixelReader(), currentX[1], currentY[1],frameWidth , frameHeight);
 		gc.drawImage(shownFrame2, 50, 50);
 		for(IRenderable r : IRenderableHolder.getInstance().getEntities()){
@@ -252,16 +245,12 @@ public class GameScreen extends StackPane{
 		}
 	}
 	
-	public void paintUI(GraphicsContext gc){
-		gc.setFill(Color.BLUE);
-		gc.fillRect(0, 0, 1150, 50);
-		gc.setStroke(Color.AZURE);
-		gc.setLineWidth(10);
-		gc.strokeRect(0, 0, 1150, 50);
+	private void paintUI(GraphicsContext gc){
 		gc.setFill(Color.LEMONCHIFFON);
-		gc.fillRect(0, 55, 50, 500);
-		gc.fillRect(550, 55, 50, 500);
-		gc.fillRect(1100, 55, 50, 500);
+		gc.fillRect(0, 0, 1150, 50);
+		gc.fillRect(0, 50, 50, 500);
+		gc.fillRect(550, 50, 50, 500);
+		gc.fillRect(1100, 50, 50, 500);
 		gc.fillRect(0, 550, 1150, 50);
 	}
 	
@@ -271,14 +260,14 @@ public class GameScreen extends StackPane{
 			
 			if(r instanceof Player){
 				Player p = (Player) r;
-				currentX[i] = p.getX()-250;
-				currentY[i] = p.getY()-250;
+				currentX[i] = p.getX()- frameWidth/2;
+				currentY[i] = p.getY()- frameHeight/2;
 				speed[i] = p.getSpeed();
 				
 				if(currentX[i] < 0) currentX[i] = 0;
-				else if(currentX[i] + 500 > 1920) currentX[i] = 1920 - 500;
+				else if(currentX[i] + frameWidth > maxWidth) currentX[i] = maxWidth - frameWidth;
 				if(currentY[i] < 0) currentY[i] = 0;
-				else if(currentY[i] + 500 > 1138 ) currentY[i] = 1138 - 500;
+				else if(currentY[i] + frameHeight > maxHeight ) currentY[i] = maxHeight - frameHeight;
 				
 				if(i == 0){
 					player1 = p;
@@ -291,8 +280,8 @@ public class GameScreen extends StackPane{
 	}
 	
 	public boolean isInFrame(int x, int y, int currentX, int currentY){
-		if(x - currentX + 20 < 0 || x - currentX - 20 > 500) return false;
-		else if(y - currentY +20 < 0 || y - currentY -20 > 500) return false;
+		if(x - currentX + 20 < 0 || x - currentX - 20 > frameWidth) return false;
+		else if(y - currentY +20 < 0 || y - currentY -20 > frameHeight) return false;
 		return true;
 	}
 
