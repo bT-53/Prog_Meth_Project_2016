@@ -1,7 +1,12 @@
 package Main;
 
+import java.util.List;
+
 import Logic.GameManager;
+import Logic.ItemProducer;
+import Logic.ThreadsHolder;
 import Utility.GameUtility;
+import Utility.RandomUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -24,7 +29,7 @@ public class Main extends Application{
 	private Scene gameScene;
 	private StartScreen startScreen;
 	private GameScreen gameScreen ;
-	public  AnimationTimer animation;
+	public  AnimationTimer animation, startAnimation;
 	
 	private boolean isGameSceneShown = false;
 	
@@ -37,6 +42,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception{
 		// TODO: ...
 		instance = this;
+		RandomUtility.init();
 		this.primaryStage = primaryStage;
 		gameScreen = new GameScreen();
 		gameScene = new Scene(gameScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);	
@@ -63,9 +69,27 @@ public class Main extends Application{
 				// TODO Auto-generated method stub
 				gameScreen.update();
 				gameScreen.paintComponenet();
+				List<Thread> threads = ThreadsHolder.instance.getThreads();
+				for (int i=threads.size()-1; i>=0; i--) {
+					if (!threads.get(i).isAlive()) {
+						threads.remove(i);
+					}
+				}
+			}
+			
+		};
+		
+		startAnimation = new AnimationTimer() {
+			
+			@Override
+			public void handle(long now) {
+				// TODO Auto-generated method stub
+				startScreen.movementUpdate();
+				startScreen.paintComponents();
 
 			}
 		};
+		startAnimation.start();
 
 		primaryStage.setScene(startScene);
 		primaryStage.sizeToScene();
@@ -76,11 +100,15 @@ public class Main extends Application{
 	public synchronized void ChangeScene(){
 		if (this.isGameSceneShown){
 			this.primaryStage.setScene(startScene);
+			startAnimation.start();
 			System.out.println("To Config Screen");
 		}
 		else{
 			this.primaryStage.setScene(gameScene);
 			animation.start();
+			ItemProducer ip = new ItemProducer();
+			ThreadsHolder.instance.addThread(ip);
+			ip.start();
 			System.out.println("To Game Screen");
 		}
 		this.isGameSceneShown = !this.isGameSceneShown;

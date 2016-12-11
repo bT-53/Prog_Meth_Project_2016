@@ -9,6 +9,7 @@ import Model.ATKSpeedItem;
 import Model.Bullet;
 import Model.BulletItem;
 import Model.Entity;
+import Model.HPItem;
 import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
@@ -56,10 +57,12 @@ public class GameScreen extends StackPane{
 		player1 = new Player("Sa", 250, 250,GameUtility.UP);
 		IRenderableHolder.getInstance().addEntity(player1);
 		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
+		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,200));
 		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
 		IRenderableHolder.getInstance().addEntity(new ATKItem(250,300));
 		IRenderableHolder.getInstance().addEntity(new SpeedItem(150,300));
 		IRenderableHolder.getInstance().addEntity(new ATKSpeedItem(350,300));
+		IRenderableHolder.getInstance().addEntity(new HPItem(450,300));
 		IRenderableHolder.getInstance().addEntity(new BulletItem(50,300));
 		
 		for(int y = -20; y <= maxHeight + 20; y += 40){
@@ -152,28 +155,13 @@ public class GameScreen extends StackPane{
 		
 		Platform.runLater(()->{
 			if (player1.isDestroyed() && player2.isDestroyed()) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("GAME END!!");
-				alert.setHeaderText(null);
-				alert.setContentText("DRAW");
-				Main.instance.animation.stop();
-				alert.showAndWait();
+				GameManager.endGame("DRAW");
 			}
 			else if (player1.isDestroyed()) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("GAME END!!");
-				alert.setHeaderText(null);
-				alert.setContentText(player2.getName() + " WINS");
-				Main.instance.animation.stop();
-				alert.showAndWait();
+				GameManager.endGame(player2.getName() + " WINS");
 			}
 			else if (player2.isDestroyed()) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("GAME END!!");
-				alert.setHeaderText(null);
-				alert.setContentText(player1.getName() + " WINS");
-				Main.instance.animation.stop();
-				alert.showAndWait();
+				GameManager.endGame(player1.getName() + " WINS");
 			}
 		});
 		
@@ -256,7 +244,7 @@ public class GameScreen extends StackPane{
 		paintFrame2(gc);
 		paintUI(gc);
 		paintStatus(gc);
-
+		
 	}
 	
 	private void paintFrame1(GraphicsContext gc){ //draw frame1 the right frame
@@ -288,7 +276,7 @@ public class GameScreen extends StackPane{
 	}
 	
 	private void paintUI(GraphicsContext gc){
-		gc.setFill(Color.LEMONCHIFFON);
+		gc.setFill(Color.CHARTREUSE);
 		gc.fillRect(0, 0, 1075, 25);
 		gc.fillRect(0, 25, 25, 500);
 		gc.fillRect(525, 25, 25, 500);
@@ -297,6 +285,7 @@ public class GameScreen extends StackPane{
 	}
 	
 	private void paintStatus(GraphicsContext gc){
+		gc.setGlobalAlpha(0.7);
 		gc.setFill(Color.WHITE);
 		gc.fillRoundRect(25, 530, 500, 115 , 10, 10);
 		gc.fillRoundRect(550, 530, 500, 115 , 10, 10);
@@ -318,6 +307,7 @@ public class GameScreen extends StackPane{
 		gc.fillText("ATK: "+player1.getATK()+"/5", 555, 620);
 		gc.fillText("ATKSpeed: "+player1.getATKSpeed()+"/13", 805, 580);
 		gc.fillText("Bullet: "+player1.getBullets()+"/5", 805, 600);
+		gc.setGlobalAlpha(1);
 	}
 	
 	public void findPlayer(){ //use to find player and capture in the frame

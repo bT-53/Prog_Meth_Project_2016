@@ -14,7 +14,7 @@ public class IRenderableHolder {
 	private static final IRenderableHolder instance = new IRenderableHolder();
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
-	public static Image bg, ATKSpeedIcon, ATKIcon, speedIcon, bulletIcon;
+	public static Image bg, ATKSpeedIcon, ATKIcon, speedIcon, bulletIcon, HPIcon;
 	public static AudioClip shootingSound;
 	public static AudioClip deathSound;
 	private static String shoot = "shootingSound.wav";
@@ -32,7 +32,7 @@ public class IRenderableHolder {
 		loadResource();
 	}
 	
-	public void addEntity(IRenderable e) {
+	public synchronized  void addEntity(IRenderable e) {
 		entities.add(e);
 		Collections.sort(entities, comparator);
 	}
@@ -44,6 +44,7 @@ public class IRenderableHolder {
 		ATKIcon = new Image(ClassLoader.getSystemResource("ATK.png").toString());
 		speedIcon = new Image(ClassLoader.getSystemResource("Speed.png").toString());
 		bulletIcon = new Image(ClassLoader.getSystemResource("Bullet.png").toString());
+		HPIcon = new Image(ClassLoader.getSystemResource("HP.png").toString());
 		}
 
 	public List<IRenderable> getEntities() {
