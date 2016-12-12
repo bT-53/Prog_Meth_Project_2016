@@ -124,7 +124,7 @@ public class StartScreen extends StackPane{
 		BufferedReader br;
 		try{
 			//System.out.println(ClassLoader.getSystemResource("gamemap.txt").toString());
-			br = new BufferedReader(new FileReader("res/gamemap.txt"));
+			br = new BufferedReader(new FileReader("gamemap.txt"));
 		}catch(FileNotFoundException e) {
 			System.out.println("File Not Found");
 			e.printStackTrace();

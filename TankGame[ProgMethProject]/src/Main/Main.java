@@ -10,6 +10,7 @@ import Utility.RandomUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ui.GameScreen;
 import ui.StartScreen;
 
@@ -45,8 +47,26 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception{
 		// TODO: ...
 		instance = this;
-		RandomUtility.init();
 		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("TankGame 1 vs 1");
+		this.primaryStage.setResizable(false);
+		this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			
+			@Override
+			public void handle(WindowEvent event) {
+				// TODO Auto-generated method stub
+				for (Thread t: ThreadsHolder.instance.getThreads()) {
+					t.interrupt();
+				}
+				ThreadsHolder.instance.getThreads().clear();
+				startAnimation.stop();
+				animation.stop();
+			}
+			
+		});
+		
+		RandomUtility.init();
+		
 		gameScreen = new GameScreen();
 		
 		gameScene = new Scene(gameScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
