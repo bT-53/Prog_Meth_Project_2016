@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.sun.media.jfxmedia.AudioClip;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 
 public class IRenderableHolder {
 	
@@ -18,7 +18,7 @@ public class IRenderableHolder {
 	public static AudioClip shootingSound;
 	public static AudioClip deathSound;
 	private static String shoot = "shootingSound.wav";
-	private static String death = "shootingSound.wav" ;
+	private static String death = "deathSound.wav" ;
 	
 	public IRenderableHolder() {
 		entities = new ArrayList<>();
@@ -45,6 +45,8 @@ public class IRenderableHolder {
 		speedIcon = new Image(ClassLoader.getSystemResource("Speed.png").toString());
 		bulletIcon = new Image(ClassLoader.getSystemResource("Bullet.png").toString());
 		HPIcon = new Image(ClassLoader.getSystemResource("HP.png").toString());
+		shootingSound = new AudioClip(ClassLoader.getSystemResource(shoot).toString());
+		deathSound = new AudioClip(ClassLoader.getSystemResource(death).toString());
 		}
 
 	public List<IRenderable> getEntities() {
@@ -53,5 +55,9 @@ public class IRenderableHolder {
 	
 	public static IRenderableHolder getInstance(){
 		return instance;
+	}
+	
+	public void clear(){
+		entities.clear();
 	}
 }

@@ -1,6 +1,7 @@
 package Model;
 
 import Utility.GameUtility;
+import Utility.SoundUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -30,6 +31,7 @@ public class Bullet extends Entity implements Movable{
 	public void hit(int dmg) {
 		System.out.println("Hit");
 		hp = 0;
+		SoundUtility.playSound("death");
 		owner.increaseBullets();
 	}
 	

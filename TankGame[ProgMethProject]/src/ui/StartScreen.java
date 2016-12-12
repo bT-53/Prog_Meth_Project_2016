@@ -1,22 +1,29 @@
 package ui;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import Main.Main;
 import Model.IRenderableHolder;
 import Model.Player;
+import Model.Pond;
+import Model.StrongObstacle;
+import Model.WeakObstacle;
 import Utility.ColorUtility;
 import Utility.GameUtility;
 import Utility.NameFormatException;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
@@ -33,14 +40,13 @@ public class StartScreen extends StackPane{
 	private static String style = "-fx-text-fill: white; -fx-font: bold 20pt \"Time News Roman\";";
 	private TextField player1TextField, player2TextField;
 	private GameScreen gameScreen;
+	
 	public StartScreen(GameScreen gameScreen){
 		super();
 		this.setVisible(true);
-		this.gameScreen = gameScreen;
-		
 		initializeGUI();
 		addListener();
-		
+		this.gameScreen = gameScreen;
 	}
 	
 	public void addListener(){
@@ -90,30 +96,72 @@ public class StartScreen extends StackPane{
 			ColorUtility.setColorGunPlayer2(Color.AQUAMARINE);
 		});
 	}
+	
 	// Action when click startButton
 	public void action() throws NameFormatException{ 
+		int x1=0,y1=0,x2=0,y2=0;
 		if(player1TextField.getText().matches("^\\s*$") || player2TextField.getText().matches("^\\s*$")){
 			throw new NameFormatException(1);
 		}
 		else if(player1TextField.getText().equals(player2TextField.getText())){
 			throw new NameFormatException(0);
 		}
-		Main.instance.ChangeScene();
 		Main.instance.startAnimation.stop();
+		// create the map here
+		BufferedReader br;
+		try{
+			//System.out.println(ClassLoader.getSystemResource("gamemap.txt").toString());
+			br = new BufferedReader(new FileReader("res/gamemap.txt"));
+		}catch(FileNotFoundException e) {
+			System.out.println("File Not Found");
+			e.printStackTrace();
+			return;
+		}
+		try{
+			String line;
+			int p = 0;
+		    while((line = br.readLine()) != null) {
+		    	String[] tmp = line.split(" ");
+		    	int x = Integer.parseInt(tmp[1]);
+		    	int y = Integer.parseInt(tmp[2]);
+		    	if(tmp[0].equals("StrongObstacle")) {
+		    		IRenderableHolder.getInstance().addEntity(new StrongObstacle(x, y));
+		    	}
+		    	else if(tmp[0].equals("WeakObstacle")) {
+		    		IRenderableHolder.getInstance().addEntity(new WeakObstacle(x, y));
+		    	}
+		    	else if(tmp[0].equals("Pond")) {
+		    		IRenderableHolder.getInstance().addEntity(new Pond(x, y));
+		    	}
+		    	else if(tmp[0].equals("Player")) {
+		    		if (p==0) {
+		    			x1=x;
+		    			y1=y;
+		    		}
+		    		else {
+		    			x2=x;
+		    			y2=y;
+		    		}
+		    		p++;
+		    	}
+		    }
+			br.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 		if(ColorUtility.getColorBodyPlayer2() != null && ColorUtility.getColorBodyPlayer1() != null 
 				&& ColorUtility.getColorGunPlayer2() != null && ColorUtility.getColorGunPlayer1() != null){
-		IRenderableHolder.getInstance().addEntity(new Player(player2TextField.getText(), 250, 
-				250, GameUtility.UP, ColorUtility.getColorBodyPlayer2(), ColorUtility.getColorGunPlayer2()));
-		IRenderableHolder.getInstance().addEntity(new Player(player1TextField.getText(), 1000, 
-				500, GameUtility.UP, ColorUtility.getColorBodyPlayer1(), ColorUtility.getColorGunPlayer1()));
+			IRenderableHolder.getInstance().addEntity(new Player(player2TextField.getText(), x1, 
+					y1, GameUtility.UP, ColorUtility.getColorBodyPlayer2(), ColorUtility.getColorGunPlayer2()));
+			IRenderableHolder.getInstance().addEntity(new Player(player1TextField.getText(), x2, 
+					y2, GameUtility.UP, ColorUtility.getColorBodyPlayer1(), ColorUtility.getColorGunPlayer1()));
 		}else{
-			IRenderableHolder.getInstance().addEntity(new Player(player2TextField.getText(), 250, 250, GameUtility.UP));
-			IRenderableHolder.getInstance().addEntity(new Player(player1TextField.getText(), 1000, 500, GameUtility.UP));
+			IRenderableHolder.getInstance().addEntity(new Player(player2TextField.getText(), x1, y1, GameUtility.UP));
+			IRenderableHolder.getInstance().addEntity(new Player(player1TextField.getText(), x2, y2, GameUtility.UP));
 		}
 		// set the new players to frame
+		Main.instance.ChangeScene();
 		gameScreen.findPlayer();
-		
-		// create the map here
 		
 	}
 	
@@ -243,5 +291,5 @@ public class StartScreen extends StackPane{
 		if(newX + GameUtility.GAMESCREEN_WIDTH > imageWidth) newX = 0;
 		currentX = newX;
 	}
-	
+
 }

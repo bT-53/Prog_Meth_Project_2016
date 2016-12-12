@@ -9,9 +9,12 @@ import Utility.GameUtility;
 import Utility.RandomUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
@@ -27,12 +30,12 @@ public class Main extends Application{
 	private Stage primaryStage;
 	private Scene startScene;
 	private Scene gameScene;
+	
 	private StartScreen startScreen;
 	private GameScreen gameScreen ;
-	public  AnimationTimer animation, startAnimation;
+	public AnimationTimer animation, startAnimation;
 	
 	private boolean isGameSceneShown = false;
-	
 	
 	public static void main(String args[]) {
 		launch(args);
@@ -45,10 +48,10 @@ public class Main extends Application{
 		RandomUtility.init();
 		this.primaryStage = primaryStage;
 		gameScreen = new GameScreen();
-		gameScene = new Scene(gameScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);	
+		
+		gameScene = new Scene(gameScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		startScreen = new StartScreen(gameScreen);
 		startScene = new Scene(startScreen,GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
-		
 		
 
 		gameScene.setOnKeyPressed((KeyEvent e) ->{
@@ -76,7 +79,6 @@ public class Main extends Application{
 					}
 				}
 			}
-			
 		};
 		
 		startAnimation = new AnimationTimer() {
@@ -91,6 +93,7 @@ public class Main extends Application{
 		};
 		startAnimation.start();
 
+		
 		primaryStage.setScene(startScene);
 		primaryStage.sizeToScene();
 		primaryStage.show();
@@ -98,6 +101,7 @@ public class Main extends Application{
 	}
 	
 	public synchronized void ChangeScene(){
+		System.out.println("Change Scene");
 		if (this.isGameSceneShown){
 			this.primaryStage.setScene(startScene);
 			startAnimation.start();
@@ -113,9 +117,5 @@ public class Main extends Application{
 		}
 		this.isGameSceneShown = !this.isGameSceneShown;
 	} 
-	
-	
-	
-	
 	
 }

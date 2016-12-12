@@ -168,23 +168,6 @@ public class GameManager {
 			}
 		}
 	}
-
-//	public static void buildObstacle() {
-//		//TODO: wait for width and size of each entity & number of obstacle (range)
-//		int obstaclesNumber = RandomUtility.random(10, 20);
-//		while (obstaclesNumber > 0) {
-//			int x = RandomUtility.random(25);
-//			int y = RandomUtility.random(25);
-//			while (true) { // TODO: check if can place here
-//				x = RandomUtility.random(25);
-//				y = RandomUtility.random(25);
-//				break;
-//			}
-//			WeakObstacle obstacle = new WeakObstacle(x, y);
-//			IRenderableHolder.getInstance().addEntity(obstacle);
-//			obstaclesNumber --;
-//		}
-//	}
 	
 	public static void endGame(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -196,7 +179,9 @@ public class GameManager {
 			t.interrupt();
 		}
 		ThreadsHolder.instance.getThreads().clear();
+		IRenderableHolder.getInstance().clear();
 		alert.showAndWait();
+		Main.instance.ChangeScene();
 	}
 	
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import Utility.SoundUtility;
 import javafx.scene.canvas.GraphicsContext;
 
 public abstract class Entity implements IRenderable{

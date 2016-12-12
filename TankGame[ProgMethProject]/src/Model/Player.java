@@ -4,6 +4,7 @@ import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
 import Utility.GameUtility;
+import Utility.SoundUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -117,6 +118,7 @@ public class Player extends Entity implements Movable{
 		Bullet bullet = new Bullet(this, x, y);
 		IRenderableHolder.getInstance().addEntity(bullet);
 		bulletsLimit--;
+		SoundUtility.playSound("shoot");
 	}
 	
 	public int getHP() {

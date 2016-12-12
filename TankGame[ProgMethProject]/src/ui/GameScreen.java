@@ -1,5 +1,10 @@
 package ui;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import Logic.GameManager;
@@ -9,7 +14,6 @@ import Model.ATKSpeedItem;
 import Model.Bullet;
 import Model.BulletItem;
 import Model.Entity;
-import Model.HPItem;
 import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Player;
@@ -40,28 +44,19 @@ public class GameScreen extends StackPane{
 	private Player player1, player2;
 	private static int frameWidth = 500;
 	private static int frameHeight = 500;
-	private static int maxWidth = 1920 ; 
-	private static int maxHeight = 1160;
+	public static int maxWidth = 1920 ; 
+	public static int maxHeight = 1160;
 	private int[] currentX, currentY , speed;
 	
 	public GameScreen(){
 		super();
-		// initialize fields
 		currentX = new int[2];
 		currentY = new int[2];
 		speed = new int[2];
 		this.setPrefSize(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		
-		IRenderableHolder.getInstance().addEntity(new Pond(100,150));
-		IRenderableHolder.getInstance().addEntity(new StrongObstacle(100,200));
-		IRenderableHolder.getInstance().addEntity(new WeakObstacle(100,100));
-		IRenderableHolder.getInstance().addEntity(new ATKItem(250,300));
-		IRenderableHolder.getInstance().addEntity(new SpeedItem(150,300));
-		IRenderableHolder.getInstance().addEntity(new ATKSpeedItem(350,300));
-		IRenderableHolder.getInstance().addEntity(new HPItem(450,300));
-		IRenderableHolder.getInstance().addEntity(new BulletItem(50,300));
 		
-		for(int y = -20; y <= maxHeight + 20; y += 40){// create boundary
+		for(int y = -20; y <= maxHeight + 20; y += 40){ // create boundary
 			if(y == -20 || y == maxHeight +20){
 				for(int x = 20; x <= maxWidth - 20; x += 40){
 					IRenderableHolder.getInstance().addEntity(new StrongObstacle(x,y));
@@ -72,7 +67,7 @@ public class GameScreen extends StackPane{
 			}
 		}
 		// use background from IRenderableHolder
-		this.bg = IRenderableHolder.bg; 
+		this.bg = IRenderableHolder.bg;
 		// create canvas
 		this.canvas = new Canvas(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		canvas.setVisible(true);			
@@ -155,7 +150,6 @@ public class GameScreen extends StackPane{
 				GameManager.endGame(player1.getName() + " WINS");
 			}
 		});
-		
 	}
 	
 	public void keyPressed(KeyCode code) {
@@ -235,7 +229,6 @@ public class GameScreen extends StackPane{
 		paintFrame2(gc);
 		paintUI(gc);
 		paintStatus(gc);
-		
 	}
 	
 	private void paintFrame1(GraphicsContext gc){ //draw frame1 the right frame

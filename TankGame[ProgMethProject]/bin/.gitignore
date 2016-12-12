@@ -1,10 +1,6 @@
-/Model/
-/ui/
-/Main/
-/Utility/
 /Logic/
-/ATKspeed.png
-/ATK.png
-/Speed.png
-/Bullet.png
-/HP.png
+/Main/
+/Model/
+/Utility/
+/ui/
+/gamemap.txt

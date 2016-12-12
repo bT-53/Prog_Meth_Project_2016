@@ -9,7 +9,9 @@ import Model.IRenderable;
 import Model.IRenderableHolder;
 import Model.Item;
 import Model.SpeedItem;
+import Utility.GameUtility;
 import Utility.RandomUtility;
+import ui.GameScreen;
 
 public class ItemProducer extends Thread{
 	
@@ -35,15 +37,15 @@ public class ItemProducer extends Thread{
 	
 	private static Item buildItem() {
 		//TODO: wait for width and size of each entity & number of obstacle (range)
-		//int x = RandomUtility.random(GameUtility.GAMESCREEN_WIDTH - 40) + 20;
-		//int y = RandomUtility.random(GameUtility.GAMESCREEN_HEIGHT - 40) + 20;
-		int x = RandomUtility.random(460) + 20;
-		int y = RandomUtility.random(460) + 20;
+		int x = RandomUtility.random(GameScreen.maxWidth - 40) + 20;
+		int y = RandomUtility.random(GameScreen.maxHeight - 40) + 20;
+		//int x = RandomUtility.random(460) + 20;
+		//int y = RandomUtility.random(460) + 20;
 		while (!canPlaceAt(x, y)) { // TODO: check if can place here
-			//x = RandomUtility.random(GameUtility.GAMESCREEN_WIDTH - 40) + 20;
-			//y = RandomUtility.random(GameUtility.GAMESCREEN_HEIGHT - 40) + 20;
-			x = RandomUtility.random(460) + 20;
-			y = RandomUtility.random(460) + 20;
+			x = RandomUtility.random(GameScreen.maxWidth - 40) + 20;
+			y = RandomUtility.random(GameScreen.maxHeight - 40) + 20;
+			//x = RandomUtility.random(460) + 20;
+			//y = RandomUtility.random(460) + 20;
 			
 		}
 		int type = RandomUtility.random(1,6);
