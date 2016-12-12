@@ -180,6 +180,7 @@ public class GameManager {
 		}
 		ThreadsHolder.instance.getThreads().clear();
 		alert.showAndWait();
+		Main.instance.ChangeScene();
 	}
 	
 }

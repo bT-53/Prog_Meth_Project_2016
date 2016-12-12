@@ -10,6 +10,7 @@ import Utility.RandomUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ui.GameScreen;
 import ui.StartScreen;
 
@@ -88,11 +90,26 @@ public class Main extends Application{
 				// TODO Auto-generated method stub
 				startScreen.movementUpdate();
 				startScreen.paintComponents();
+				System.out.println("Start Screen is running");
 
 			}
 		};
 		startAnimation.start();
-
+		
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			
+			@Override
+			public void handle(WindowEvent event) {
+				// TODO Auto-generated method stub
+				for (Thread t: ThreadsHolder.instance.getThreads()) {
+					t.interrupt();
+				}
+				ThreadsHolder.instance.getThreads().clear();
+				startAnimation.stop();
+				animation.stop();
+			}
+			
+		});
 		
 		primaryStage.setScene(startScene);
 		primaryStage.sizeToScene();
