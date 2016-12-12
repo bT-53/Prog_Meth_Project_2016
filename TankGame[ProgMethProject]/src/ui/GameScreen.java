@@ -55,17 +55,6 @@ public class GameScreen extends StackPane{
 		speed = new int[2];
 		this.setPrefSize(GameUtility.GAMESCREEN_WIDTH, GameUtility.GAMESCREEN_HEIGHT);
 		
-		
-		for(int y = -20; y <= maxHeight + 20; y += 40){ // create boundary
-			if(y == -20 || y == maxHeight +20){
-				for(int x = 20; x <= maxWidth - 20; x += 40){
-					IRenderableHolder.getInstance().addEntity(new StrongObstacle(x,y));
-				}
-			}else{
-				IRenderableHolder.getInstance().addEntity(new StrongObstacle(-20,y));
-				IRenderableHolder.getInstance().addEntity(new StrongObstacle(maxWidth +20,y));
-			}
-		}
 		// use background from IRenderableHolder
 		this.bg = IRenderableHolder.bg;
 		// create canvas
